@@ -283,7 +283,7 @@ public class Main {
         return null;
     }
 
-    private static void ViewSpecialist(String type, ArrayList<User> allUsers) {
+    public static void ViewSpecialist(String type, ArrayList<User> allUsers) {
         for (User user : allUsers) {
             if (user instanceof Doctor) {
                 Doctor d = (Doctor) user;
@@ -293,7 +293,7 @@ public class Main {
         }
     }
 
-    private static int searchUsers(String id, ArrayList<User> users) {
+    public static int searchUsers(String id, ArrayList<User> users) {
         for (int index = 0; index < users.size(); index++) {
             User currentUser = users.get(index);
             String currentUserID = currentUser.getID();
