@@ -167,16 +167,12 @@ public class HelloApplication extends Application {
         });
         //Inventory Management Scene
         // buttons for scene
-        Button Invob1 = new Button("View All");
         Button Invob2 = new Button("Update Quantity");
         Button Invob3 = new Button("Update Price");
         Button Invob4 = new Button("Remove");
         Button Invob5 = new Button("Add Item");
-        GridPane InvoPane = new GridPane();
-        InvoPane.add(Invob1, 500, 500);
         //Creating and setting action for inventory scene
-        Scene InvoScene1 = new Scene(InvoPane, 500, 500);
-        Adminb3.setOnAction(e -> stage.setScene(InvoScene1));
+
         ObservableList<Item> Invlist1 = FXCollections.observableArrayList(GUIinv.getItemsinInventory());
         TableView<Item> tableView = new TableView<>(Invlist1);
         // Create TableColumn for each attribute
@@ -194,14 +190,14 @@ public class HelloApplication extends Application {
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         // Add columns to TableView
         Button GobackFromInvtable = new Button("GO back");
-        GobackFromInvtable.setOnAction(e -> stage.setScene(InvoScene1));
+        GobackFromInvtable.setOnAction(e -> stage.setScene(AdminMenuScene));
         tableView.getColumns().addAll(idColumn, nameColumn, manufacturerColumn, quantityColumn, priceColumn);
         HBox invoOptions = new HBox(GobackFromInvtable, Invob2, Invob3, Invob4, Invob5);
         VBox InvoVerticalBox = new VBox(tableView, invoOptions);
         Scene InvoScene2 = new Scene(InvoVerticalBox, 500, 500);
         AdminMenuScene = new Scene(AdminMenu, 500, 500);
         //setting functionality on all the buttons of the scene
-        Invob1.setOnAction(e -> stage.setScene(InvoScene2));
+        Adminb3.setOnAction(e -> stage.setScene(InvoScene2));
         Invob2.setOnAction(e -> {
             Label l1 = new Label("New Quantity");
             TextField T1 = new TextField();
