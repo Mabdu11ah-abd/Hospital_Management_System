@@ -6,7 +6,12 @@ public class Item {
     private String Itemname;
     private String Manufacturer;
     private int Quantity;
-    public Item(String name, String manufacturer, int quantity,String ItemID,double itemprice) {
+
+    public void setQuantity(int quantity) {
+        Quantity = quantity;
+    }
+
+    public Item(String name, String manufacturer, int quantity, String ItemID, double itemprice) {
         this.ItemID =ItemID;
         this.Itemname = name;
         this.Manufacturer = manufacturer;
@@ -18,6 +23,10 @@ public class Item {
     }
 
     private Double Price;
+
+    public void setPrice(Double price) {
+        Price = price;
+    }
 
     public Item() {
     }
@@ -84,6 +93,15 @@ public class Item {
 
         }
     }
+
+    public String getItemname() {
+        return Itemname;
+    }
+
+    public String getManufacturer() {
+        return Manufacturer;
+    }
+
     public String getItemID() {
         return ItemID;
     }

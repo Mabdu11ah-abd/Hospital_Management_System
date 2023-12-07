@@ -1,13 +1,15 @@
 package com.example.hospital_management_system;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -94,7 +96,9 @@ public class HelloApplication extends Application {
         Registergoback.setOnAction(e -> {
             stage.setScene(s1);
         });
-        Registerb1.setOnAction(e->{stage.setScene(PatientMenuScene);});
+        Registerb1.setOnAction(e -> {
+            stage.setScene(PatientMenuScene);
+        });
         //Doctor Menu
         /* Further Scenes for doctor menu are writing prescriptions 1s, Managing Appointments 3s,Updating Patient 1s*/
         Label Options = new Label("Choose Your Option ");
@@ -109,10 +113,10 @@ public class HelloApplication extends Application {
         dMenuPane.add(doctorMenu2, 0, 2);
         dMenuPane.add(doctorMenu3, 0, 3);
         dMenuPane.add(doctorMenu4, 0, 4);
-        dMenuPane.add(doctorMenu5,0,5);
+        dMenuPane.add(doctorMenu5, 0, 5);
         dMenuPane.setAlignment(Pos.BASELINE_CENTER);
         dMenuPane.setVgap(30);
-        doctorMenu5.setOnAction(e->stage.setScene(s1));
+        doctorMenu5.setOnAction(e -> stage.setScene(s1));
         DoctorMenuScene = new Scene(dMenuPane, 500, 500);
         //Patient Menu
         /*CurrentInfo 1s, MedicalRecord 3s,GenerateInvoice 1s, Medicine 2s, ViewDoctors 1s, AssignDoctor 1s*/
@@ -132,10 +136,12 @@ public class HelloApplication extends Application {
         patientMenu.add(patientb4, 0, 4);
         patientMenu.add(patientb5, 0, 5);
         patientMenu.add(patientb6, 0, 6);
-        patientMenu.add(patientb7,0,7);
+        patientMenu.add(patientb7, 0, 7);
         patientMenu.setAlignment(Pos.BASELINE_CENTER);
         patientMenu.setVgap(35);
-        patientb7.setOnAction(e->{stage.setScene(s1);});
+        patientb7.setOnAction(e -> {
+            stage.setScene(s1);
+        });
         PatientMenuScene = new Scene(patientMenu, 500, 500);
         //Admin Menu
         /*adding Doctor 1s, Scheduling Appointment 1s, Managing inventory 6s,Edit 3s, view 2s*/
@@ -154,19 +160,125 @@ public class HelloApplication extends Application {
         AdminMenu.add(Adminb4, 0, 4);
         AdminMenu.add(Adminb5, 0, 5);
         AdminMenu.add(Adminb6, 0, 6);
-
         AdminMenu.setAlignment(Pos.BASELINE_CENTER);
         AdminMenu.setVgap(35);
-        Adminb6.setOnAction(e->{stage.setScene(s1);});
+        Adminb6.setOnAction(e -> {
+            stage.setScene(s1);
+        });
+        //Inventory Management Scene
+        // buttons for scene
+        Button Invob1 = new Button("View All");
+        Button Invob2 = new Button("Update Quantity");
+        Button Invob3 = new Button("Update Price");
+        Button Invob4 = new Button("Remove");
+        Button Invob5 = new Button("Add Item");
+        GridPane InvoPane = new GridPane();
+        InvoPane.add(Invob1, 500, 500);
+        //Creating and setting action for inventory scene
+        Scene InvoScene1 = new Scene(InvoPane, 500, 500);
+        Adminb3.setOnAction(e -> stage.setScene(InvoScene1));
+        ObservableList<Item> Invlist1 = FXCollections.observableArrayList(GUIinv.getItemsinInventory());
+        TableView<Item> tableView = new TableView<>(Invlist1);
+        // Create TableColumn for each attribute
+        TableColumn<Item, String> idColumn = new TableColumn<>("Item ID");
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("itemID"));
+        TableColumn<Item, String> nameColumn = new TableColumn<>("Item Name");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("Itemname"));
+        TableColumn<Item, String> manufacturerColumn = new TableColumn<>("Manufacturer");
+        manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+        TableColumn<Item, Integer> quantityColumn = new TableColumn<>("Quantity");
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        TableColumn<Item, Double> priceColumn = new TableColumn<>("Price");
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        // setting the selection mode of the the table view as single
+        tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        // Add columns to TableView
+        Button GobackFromInvtable = new Button("GO back");
+        GobackFromInvtable.setOnAction(e -> stage.setScene(InvoScene1));
+        tableView.getColumns().addAll(idColumn, nameColumn, manufacturerColumn, quantityColumn, priceColumn);
+        HBox invoOptions = new HBox(GobackFromInvtable, Invob2, Invob3, Invob4, Invob5);
+        VBox InvoVerticalBox = new VBox(tableView, invoOptions);
+        Scene InvoScene2 = new Scene(InvoVerticalBox, 500, 500);
         AdminMenuScene = new Scene(AdminMenu, 500, 500);
+        //setting functionality on all the buttons of the scene
+        Invob1.setOnAction(e -> stage.setScene(InvoScene2));
+        Invob2.setOnAction(e -> {
+            Label l1 = new Label("New Quantity");
+            TextField T1 = new TextField();
+            Button b1 = new Button("Submit");
+            HBox h1 = new HBox(l1, T1, b1);
+            InvoVerticalBox.getChildren().add(h1);
+            b1.setOnAction(a -> {
+                int i = Invlist1.indexOf(tableView.getSelectionModel().getSelectedItem());
+                Invlist1.get(i).setQuantity(Integer.parseInt(T1.getText()));
+                InvoVerticalBox.getChildren().remove(h1);
+                tableView.refresh();
+            });
+        });
+        Invob3.setOnAction(e -> {
+            Label l1 = new Label("New Price");
+            TextField T1 = new TextField();
+            Button b1 = new Button("Submit");
+            HBox h1 = new HBox(l1, T1, b1);
+            InvoVerticalBox.getChildren().add(h1);
+            b1.setOnAction(a -> {
+                int i = Invlist1.indexOf(tableView.getSelectionModel().getSelectedItem());
+                Invlist1.get(i).setPrice(Double.parseDouble(T1.getText()));
+                InvoVerticalBox.getChildren().remove(h1);
+                tableView.refresh();
+            });
+        });
+        Invob4.setOnAction(e -> {
+            Item selected = tableView.getSelectionModel().getSelectedItem();
+            if (selected != null)
+                // Remove the selected item from the list
+                Invlist1.remove(selected);
+            // Refresh the TableView
+            tableView.refresh();
+        });
+        Invob5.setOnAction(e -> {
+            Label l1 = new Label("ID: ");
+            Label l2 = new Label("Name: ");
+            Label l3 = new Label("Manufacturer: ");
+            Label l4 = new Label("Quantity: ");
+            Label l5 = new Label("Price: ");
+            // Create TextFields for user input
+            TextField t1 = new TextField();
+            TextField t2 = new TextField();
+            TextField t3 = new TextField();
+            TextField t4 = new TextField();
+            TextField t5 = new TextField();
+            // Assuming you have a GridPane named "gridPane"
+            GridPane gridPane = new GridPane();
+            gridPane.add(l1, 0, 0); // ID Label
+            gridPane.add(t1, 1, 0); // ID TextField
 
+            gridPane.add(l2, 0, 1); // Name Label
+            gridPane.add(t2, 1, 1); // Name TextField
 
+            gridPane.add(l3, 0, 2); // Manufacturer Label
+            gridPane.add(t3, 1, 2); // Manufacturer TextField
+
+            gridPane.add(l4, 0, 3); // Quantity Label
+            gridPane.add(t4, 1, 3); // Quantity TextField
+
+            gridPane.add(l5, 0, 4); // Price Label
+            gridPane.add(t5, 1, 4); // Price TextField
+            InvoVerticalBox.getChildren().add(gridPane);
+            Button b = new Button("Submit");
+            gridPane.add(b,2,4);
+            b.setOnAction(a -> {
+                Item i = new Item(t2.getText(), t3.getText(), Integer.parseInt(t4.getText()), t1.getText(), Double.parseDouble(t5.getText()));
+                Invlist1.add(i);
+                InvoVerticalBox.getChildren().remove(gridPane);
+                tableView.refresh();
+            });
+        });
         //Showing the primary Scene
-        stage.setScene(s1);
+        stage.setScene(InvoScene2);
         stage.show();
-
-
     }
+
 
     public static void main(String[] args) {
         launch();

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Inventory {
+    public ArrayList<Item> getItemsinInventory() {
+        return ItemsinInventory;
+    }
+
     private ArrayList<Item> ItemsinInventory = new ArrayList<Item>(20);
 
     public double BuyItems() {
