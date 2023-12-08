@@ -293,7 +293,7 @@ public class Main {
         }
     }
 
-    public static int searchUsers(String id, ArrayList<User> users) {
+    private static int searchUsers(String id, ArrayList<User> users) {
         for (int index = 0; index < users.size(); index++) {
             User currentUser = users.get(index);
             String currentUserID = currentUser.getID();

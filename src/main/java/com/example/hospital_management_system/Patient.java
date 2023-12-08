@@ -20,7 +20,11 @@ public class Patient extends User {
         this.Age = age;
         this.address = address;
     }
-
+    public void setGuiPatient(String username, int age, String address) {
+        this.Name = username;
+        this.Age = age;
+        this.address = address;
+    }
     public void SetPatient() {
         // scanner variable for input
         Scanner input = new Scanner(System.in);
@@ -36,8 +40,6 @@ public class Patient extends User {
         System.out.println("Enter the age of the patient : ");
         this.Age = input.nextInt();
     }
-
-
     public void UpdateBilling(double amount) {// meant for user to buy items
         Bill.UpdatePayment(amount);
     }

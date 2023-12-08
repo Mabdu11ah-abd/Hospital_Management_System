@@ -50,7 +50,7 @@ public class Bed {
     }
 
     public void setDaysOccupied(int daysOccupied) {
-        DaysOccupied = daysOccupied;
+        DaysOccupied = daysOccupied; isOccupied=true;
     }
 
     // Other relevant methods

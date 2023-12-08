@@ -142,7 +142,7 @@ public String getSpecialization() {
         }
         return -1;
     }
-    public String getname()
+    public String getName()
     {
         return Name;
     }

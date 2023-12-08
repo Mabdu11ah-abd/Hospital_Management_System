@@ -23,6 +23,14 @@ public class Appointment {
         return status;
     }
 
+    public Appointment(Patient appointmentPatient, Doctor appointmentDoctor, String appointmentDate, String appointmenttime) {
+        AppointmentPatient = appointmentPatient;
+        AppointmentDoctor = appointmentDoctor;
+        AppointmentDate = appointmentDate;
+        Appointmenttime = appointmenttime;
+        System.out.println("Scheduled Yayyyyy");
+    }
+
     public Appointment(Patient AppointmentPatient, Doctor AppointmentDoctor) {
         System.out.println("SCHEDULE APPOINTMENT SECTION");
         this.AppointmentPatient = AppointmentPatient;

@@ -1,5 +1,4 @@
 package com.example.hospital_management_system;
-
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -14,9 +13,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 //Testing Push
 public class HelloApplication extends Application {
     ArrayList<User> allUsers;
@@ -77,7 +76,6 @@ public class HelloApplication extends Application {
         TextField id = new TextField();
         TextField address = new TextField();
         TextField patient = new TextField();
-
         //Add labels and text fields to the GridPane
         registerUserPane.add(Registerl1, 0, 0);
         registerUserPane.add(Registername, 1, 0);
@@ -101,8 +99,8 @@ public class HelloApplication extends Application {
             stage.setScene(PatientMenuScene);
         });
         //Doctor Menu
-        /* Further Scenes for doctor menu are writing prescriptions 1s, Managing Appointments 3s,Updating Patient 1s*/
-        Label Options = new Label("Choose Your Option ");
+        /* Futher Scenes for doctor menu are writing prescriptions 1s, Managing Appointments 3s,Updating Patient 1s*/
+        Label Options = new Label("Choose Your Option");
         Button doctorMenu1 = new Button("View Patients");
         Button doctorMenu2 = new Button("write Prescriptions");
         Button doctorMenu3 = new Button("Manage Appointments");
@@ -117,7 +115,15 @@ public class HelloApplication extends Application {
         dMenuPane.add(doctorMenu5, 0, 5);
         dMenuPane.setAlignment(Pos.BASELINE_CENTER);
         dMenuPane.setVgap(30);
-        doctorMenu5.setOnAction(e -> stage.setScene(s1));
+        doctorMenu5.setOnAction(e -> {
+            Alert patientAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            patientAlert.setTitle("CONFIRMATION");
+            patientAlert.setContentText("DO U WANT TO LOGOUT");
+            Optional<ButtonType> result = patientAlert.showAndWait();
+            if(result.get() == ButtonType.OK){
+                stage.setScene(s1);
+            }
+        });
         DoctorMenuScene = new Scene(dMenuPane, 500, 500);
         //Patient Menu
         /*CurrentInfo 1s, MedicalRecord 3s,GenerateInvoice 1s, Medicine 2s, ViewDoctors 1s, AssignDoctor 1s*/
@@ -140,17 +146,54 @@ public class HelloApplication extends Application {
         patientMenu.add(patientb7, 0, 7);
         patientMenu.setAlignment(Pos.BASELINE_CENTER);
         patientMenu.setVgap(35);
-        patientb7.setOnAction(e -> {
-            stage.setScene(s1);
-        });
         PatientMenuScene = new Scene(patientMenu, 500, 500);
+        //Buttons for Patient Menu
+        patientb1.setOnAction(e-> {//shows patient info
+            searchUsers(login1.getText());
+            Button patientCurrentInfoBtn = new Button("Back");
+            Label patientcurrentinfol1 = new Label("Name of Patient");
+            Label patientcurrentinfol2 = new Label("ID of Patient");
+            Label patientcurrentinfol3 = new Label("Age of Patient");
+            Label patientcurrentinfol4 = new Label("Address of Patient");
+            Label patientcurrentinfol5 = new Label(CurrentUser[0].getName());
+            Label patientcurrentinfol6 = new Label(CurrentUser[0].getID());
+            Label patientcurrentinfol7 = new Label(Integer.toString(((Patient) CurrentUser[0]).getAge()));
+            Label patientcurrentinfol8 = new Label(((Patient)CurrentUser[0]).getAddress());
+            GridPane patientCurrentInfoGrid = new GridPane();
+            patientCurrentInfoGrid.add(patientcurrentinfol1 , 3,5);
+            patientCurrentInfoGrid.add(patientcurrentinfol2 , 3,6);
+            patientCurrentInfoGrid.add(patientcurrentinfol3 , 3,7);
+            patientCurrentInfoGrid.add(patientcurrentinfol4 , 3,8);
+            patientCurrentInfoGrid.add(patientcurrentinfol5 , 4,5);
+            patientCurrentInfoGrid.add(patientcurrentinfol6 , 4,6);
+            patientCurrentInfoGrid.add(patientcurrentinfol7 , 4,7);
+            patientCurrentInfoGrid.add(patientcurrentinfol8 , 4,8);
+            patientCurrentInfoGrid.add(patientCurrentInfoBtn, 3, 10);
+            patientCurrentInfoGrid.setHgap(10);
+            patientCurrentInfoGrid.setVgap(10);
+            patientCurrentInfoGrid.setAlignment(Pos.CENTER);
+            Scene patientCurrentInfoScene = new Scene(patientCurrentInfoGrid , 500, 500);
+            patientCurrentInfoBtn.setOnAction(a -> stage.setScene(PatientMenuScene));
+            stage.setScene(patientCurrentInfoScene);
+            stage.show();
+        });
+        patientb7.setOnAction(e -> {
+            Alert patientAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            patientAlert.setTitle("CONFIRMATION");
+            patientAlert.setContentText("DO U WANT TO LOGOUT");
+            Optional<ButtonType> result = patientAlert.showAndWait();
+            if(result.get() == ButtonType.OK){
+                stage.setScene(s1);
+         }
+});
+
+        //Patient Menu
         //Admin Menu
         /*adding Doctor 1s, Scheduling Appointment 1s, Managing inventory 6s, view 1s*/
         Label AdminOption = new Label("Choose Your Option");
         Button Adminb1 = new Button("Add Doctor");
         Button Adminb2 = new Button("Schedule Appointment");
         Button Adminb3 = new Button("Manage Inventory");
-        Button Adminb4 = new Button("Edit Patient");
         Button Adminb5 = new Button("View patients");
         Button Adminb6 = new Button("Logout");
         GridPane AdminMenu = new GridPane();
@@ -158,13 +201,18 @@ public class HelloApplication extends Application {
         AdminMenu.add(Adminb1, 0, 1);
         AdminMenu.add(Adminb2, 0, 2);
         AdminMenu.add(Adminb3, 0, 3);
-        AdminMenu.add(Adminb4, 0, 4);
-        AdminMenu.add(Adminb5, 0, 5);
-        AdminMenu.add(Adminb6, 0, 6);
+        AdminMenu.add(Adminb5, 0, 4);
+        AdminMenu.add(Adminb6, 0, 5);
         AdminMenu.setAlignment(Pos.BASELINE_CENTER);
         AdminMenu.setVgap(35);
         Adminb6.setOnAction(e -> {
-            stage.setScene(s1);
+            Alert patientAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            patientAlert.setTitle("CONFIRMATION");
+            patientAlert.setContentText("DO U WANT TO LOGOUT");
+            Optional<ButtonType> result = patientAlert.showAndWait();
+            if(result.get() == ButtonType.OK){
+                stage.setScene(s1);
+            }
         });
         //Adding Doctor Scene
         Label addDocl1 = new Label("Name");
@@ -181,7 +229,6 @@ public class HelloApplication extends Application {
         addDocPane.add(addDocl2, 0, 1);
         addDocPane.add(addDocl3, 0, 2);
         addDocPane.add(addDocl4, 0, 3);
-
         addDocPane.add(addDocT1, 1, 0);
         addDocPane.add(addDocT2, 1, 1);
         addDocPane.add(addDocT3, 1, 2);
@@ -204,6 +251,7 @@ public class HelloApplication extends Application {
         });
         Adminb1.setOnAction(e -> stage.setScene(addDocScene));
         //Schedule Appointment Scene
+        Button ScheduleAppointmentb1 = new Button("Submit");
         Label ScheduleAppointmentl1 = new Label("Doctor ID:");
         Label ScheduleAppointmentl2 = new Label("Patient ID");
         Label ScheduleAppointmentl3 = new Label("Date");
@@ -213,11 +261,47 @@ public class HelloApplication extends Application {
         TextField ScheduleAppointmentT3 = new TextField();
         TextField ScheduleAppointmentT4 = new TextField();
         GridPane ScheduleAppointmentpane = new GridPane();
+        ScheduleAppointmentpane.add(ScheduleAppointmentl1, 0, 0);
+        ScheduleAppointmentpane.add(ScheduleAppointmentT1, 1, 0);
+        ScheduleAppointmentpane.add(ScheduleAppointmentl2, 0, 1);
+        ScheduleAppointmentpane.add(ScheduleAppointmentT2, 1, 1);
+        ScheduleAppointmentpane.add(ScheduleAppointmentl3, 0, 2);
+        ScheduleAppointmentpane.add(ScheduleAppointmentT3, 1, 2);
+        ScheduleAppointmentpane.add(ScheduleAppointmentl4, 0, 3);
+        ScheduleAppointmentpane.add(ScheduleAppointmentT4, 1, 3);
+        ScheduleAppointmentpane.add(ScheduleAppointmentb1,2,4);
+        Scene ScheduleapScene = new Scene(ScheduleAppointmentpane,500,500);
+        Adminb2.setOnAction(e -> {stage.setScene(ScheduleapScene);});
+        ScheduleAppointmentb1.setOnAction(e->{
+            Patient p = null;
+            Doctor d = null;
+            if (searchUsers(ScheduleAppointmentT1.getText()) != -1) {
+                d = ((Doctor) allUsers.get(searchUsers(ScheduleAppointmentT1.getText())));
+            } else {
+                System.out.println("incorrect Id");
+            }
+            if (searchUsers(ScheduleAppointmentT2.getText()) != -1) {
+                p = ((Patient) allUsers.get(searchUsers(ScheduleAppointmentT2.getText())));
+            } else {
+                System.out.println("Incorrect ID");
+            }
+            Appointment ap = new Appointment(p, d, ScheduleAppointmentT3.getText(), ScheduleAppointmentT4.getText());
+            d.addAppointment(ap);
+            ScheduleAppointmentT1.clear();
+            ScheduleAppointmentT2.clear();
+            ScheduleAppointmentT3.clear();
+            ScheduleAppointmentT4.clear();
+        });
         //schedule Appointment Scene
 
         //View and Edit Patients Scene
+
         //Buttons
-        Button viewAllPatientsb1 = new Button();
+        Button viewAllPatientsb1 = new Button("Go back");
+        Button viewAllPatientsb2 = new Button("Edit Patient");
+        Button viewAllPatientsb3 = new Button("Appoint bed");
+        Button viewAllPatientsb4 = new Button("Free Bed");
+        HBox viewAllPatientsHbox = new HBox(viewAllPatientsb1, viewAllPatientsb2, viewAllPatientsb3, viewAllPatientsb4);
         //Observable arraylist and table view
         ObservableList<Patient> patientsList = FXCollections.observableArrayList(addPatientstoObserve());
         System.out.println(patientsList.size());
@@ -232,15 +316,92 @@ public class HelloApplication extends Application {
         patientAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         TableColumn<Patient, Integer> patientAgeColumn = new TableColumn<>("Age");
         patientAgeColumn.setCellValueFactory(new PropertyValueFactory<>("Age"));
-        patientTable.getColumns().addAll(patientIdColumn, patientNameColumn, patientAgeColumn, patientAddressColumn);
+        TableColumn<Patient, String> patientInchargeColumn = new TableColumn<>("Incharge");
+        //for doctor incharge
+        patientInchargeColumn.setCellValueFactory(data -> {
+            if (data.getValue().getDoctorIncharge() == null)
+                return new SimpleStringProperty("NA");
+            return new SimpleStringProperty(
+                    data.getValue().getDoctorIncharge().getName());
+        });
+        TableColumn<Patient, String> viewAllPatientsBed = new TableColumn<>("Bed");
+        viewAllPatientsBed.setCellValueFactory(data -> {
+            if (data.getValue().getBedUsed() != null)
+                return new SimpleStringProperty("T");
+            return new SimpleStringProperty("F");
+        });
+        patientTable.getColumns().addAll(patientIdColumn, patientNameColumn, patientAgeColumn, patientAddressColumn, patientInchargeColumn
+                , viewAllPatientsBed);
         patientTable.getItems().addAll(patientsList);
+        patientTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        //creating Vbox
+        VBox viewAllPatientsVbox = new VBox(patientTable, viewAllPatientsHbox);
         //creating the scene for the table
-        Scene viewAllPatient = new Scene(patientTable, 500, 500);
+        Scene viewAllPatient = new Scene(viewAllPatientsVbox, 500, 500);
         //setting actions on button
         Adminb5.setOnAction(e -> {
             stage.setScene(viewAllPatient);
         });
+        viewAllPatientsb1.setOnAction(e -> stage.setScene(AdminMenuScene));
+        viewAllPatientsb2.setOnAction(e -> {
+            Label l1 = new Label("Name");
+            Label l3 = new Label("Address");
+            Label l4 = new Label("Age");
+            TextField t1 = new TextField();
+            TextField t3 = new TextField();
+            TextField t4 = new TextField();
+            GridPane gridPane = new GridPane();
+            gridPane.add(l1, 0, 0);
+            gridPane.add(t1, 1, 0);
+            gridPane.add(l3, 0, 1);
+            gridPane.add(t3, 1, 1);
+            gridPane.add(l4, 0, 2);
+            gridPane.add(t4, 1, 2);
+            viewAllPatientsVbox.getChildren().add(gridPane);
+            Patient p = patientTable.getSelectionModel().getSelectedItem();
+            Button b = new Button("Submit");
+            gridPane.add(b, 2, 2);
+            b.setOnAction(a -> {
+                        p.setGuiPatient(t1.getText(), Integer.parseInt(t4.getText()), t3.getText());
+                        viewAllPatientsVbox.getChildren().remove(gridPane);
+                        patientTable.refresh();
+                    }
+            );
+        });
+        viewAllPatientsb3.setOnAction(e -> {
+            Patient p = patientTable.getSelectionModel().getSelectedItem();
+            Label l1 = new Label("Bed number");
+            Label l2 = new Label("days occupied");
+            TextField t1 = new TextField();
+            TextField t2 = new TextField();
+            Button submit = new Button();
+            GridPane bedGridPane = new GridPane();
+            bedGridPane.add(l1, 0, 0);
+            bedGridPane.add(t1, 1, 0);
+            bedGridPane.add(l2, 0, 1);
+            bedGridPane.add(t2, 1, 1);
+            bedGridPane.add(submit, 2, 1);
+            viewAllPatientsVbox.getChildren().add(bedGridPane);
+            submit.setOnAction(a -> {
+                p.setBedUsed(allBeds[Integer.parseInt(t1.getText()) - 1]);
+                p.getBedUsed().setDaysOccupied(Integer.parseInt(t2.getText()));
+                viewAllPatientsVbox.getChildren().remove(bedGridPane);
+                patientTable.refresh();
+            });
+        });
+        viewAllPatientsb4.setOnAction(e -> {
+                    Patient p = patientTable.getSelectionModel().getSelectedItem();
+                    if (p.getBedUsed() != null) {
+                        p.getBill().finalPayment(p);
+                        p.getBedUsed().vacantBed();
+                        p.setBedUsed(null);
+                    }
+                    patientTable.refresh();
+                }
+        );
         //view and edit Patients Scene
+
+
         //Inventory Management Scene //Complete For now
         // buttons for scene
         Button Invob2 = new Button("Update Quantity");
@@ -341,6 +502,15 @@ public class HelloApplication extends Application {
                 tableView.refresh();
             });
         });
+        //Inventory Button from Patient
+        patientb3.setOnAction(e->{
+            Button b1 = new Button("Buy");
+            Button b2 = new Button ("Back");
+            GridPane gridPane = new GridPane();
+            VBox v = new VBox();
+            Scene patientInventory =new Scene(b1);
+            stage.setScene(patientInventory);
+                });
         //inventory management Scene complete
         //Showing the primary Scene
         stage.setScene(InvoScene2);
