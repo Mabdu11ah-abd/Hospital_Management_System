@@ -1,6 +1,6 @@
 package com.example.hospital_management_system;
-
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -165,7 +165,29 @@ public class HelloApplication extends Application {
         Adminb6.setOnAction(e -> {
             stage.setScene(s1);
         });
-        //Inventory Management Scene
+        //View and Edit Patients Scene
+        //Buttons
+        Button viewAllPatientsb1 = new Button();
+        //Observable arraylist and table view
+        ObservableList<Patient> patientsList = FXCollections.observableArrayList(addPatientstoObserve());
+        System.out.println(patientsList.size());
+        TableView<Patient> patientTable= new TableView<>();
+        //table Column for each attribute
+        TableColumn<Patient,String> patientIdColumn = new TableColumn<>("ID");
+        patientIdColumn.setCellValueFactory(data->new SimpleStringProperty(data.getValue().getID()));
+        TableColumn<Patient,String> patientNameColumn = new TableColumn<>("Name");
+        patientNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<Patient,String> patientAddressColumn= new TableColumn<>("Address");
+        patientAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        TableColumn<Patient,Integer> patientAgeColumn = new TableColumn<>("Age");
+        patientAgeColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
+        patientTable.getColumns().addAll(patientIdColumn,patientNameColumn,patientAgeColumn,patientAddressColumn);
+        //creating the scene for the table
+        Scene viewAllPatient = new Scene(patientTable,500,500);
+        //setting actions on button
+        Adminb5.setOnAction(e->{stage.setScene(viewAllPatient);patientTable.refresh();});
+        //view and edit Patients Scene
+        //Inventory Management Scene //Complete For now
         // buttons for scene
         Button Invob2 = new Button("Update Quantity");
         Button Invob3 = new Button("Update Price");
@@ -176,14 +198,14 @@ public class HelloApplication extends Application {
         ObservableList<Item> Invlist1 = FXCollections.observableArrayList(GUIinv.getItemsinInventory());
         TableView<Item> tableView = new TableView<>(Invlist1);
         // Create TableColumn for each attribute
-        TableColumn<Item, String> idColumn = new TableColumn<>("Item ID");
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("itemID"));
-        TableColumn<Item, String> nameColumn = new TableColumn<>("Item Name");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("Itemname"));
-        TableColumn<Item, String> manufacturerColumn = new TableColumn<>("Manufacturer");
-        manufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
-        TableColumn<Item, Integer> quantityColumn = new TableColumn<>("Quantity");
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        TableColumn<Item, String> invoidColumn = new TableColumn<>("Item ID");
+        invoidColumn.setCellValueFactory(new PropertyValueFactory<>("itemID"));
+        TableColumn<Item, String> invonameColumn = new TableColumn<>("Item Name");
+        invonameColumn.setCellValueFactory(new PropertyValueFactory<>("Itemname"));
+        TableColumn<Item, String> invoMenufacturerColumn = new TableColumn<>("Manufacturer");
+        invoMenufacturerColumn.setCellValueFactory(new PropertyValueFactory<>("manufacturer"));
+        TableColumn<Item, Integer> invoquantityColumn = new TableColumn<>("Quantity");
+        invoquantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         TableColumn<Item, Double> priceColumn = new TableColumn<>("Price");
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         // setting the selection mode of the the table view as single
@@ -191,7 +213,7 @@ public class HelloApplication extends Application {
         // Add columns to TableView
         Button GobackFromInvtable = new Button("GO back");
         GobackFromInvtable.setOnAction(e -> stage.setScene(AdminMenuScene));
-        tableView.getColumns().addAll(idColumn, nameColumn, manufacturerColumn, quantityColumn, priceColumn);
+        tableView.getColumns().addAll(invoidColumn, invonameColumn, invoMenufacturerColumn, invoquantityColumn, priceColumn);
         HBox invoOptions = new HBox(GobackFromInvtable, Invob2, Invob3, Invob4, Invob5);
         VBox InvoVerticalBox = new VBox(tableView, invoOptions);
         Scene InvoScene2 = new Scene(InvoVerticalBox, 500, 500);
@@ -248,21 +270,17 @@ public class HelloApplication extends Application {
             GridPane gridPane = new GridPane();
             gridPane.add(l1, 0, 0); // ID Label
             gridPane.add(t1, 1, 0); // ID TextField
-
             gridPane.add(l2, 0, 1); // Name Label
             gridPane.add(t2, 1, 1); // Name TextField
-
             gridPane.add(l3, 0, 2); // Manufacturer Label
             gridPane.add(t3, 1, 2); // Manufacturer TextField
-
             gridPane.add(l4, 0, 3); // Quantity Label
             gridPane.add(t4, 1, 3); // Quantity TextField
-
             gridPane.add(l5, 0, 4); // Price Label
             gridPane.add(t5, 1, 4); // Price TextField
             InvoVerticalBox.getChildren().add(gridPane);
             Button b = new Button("Submit");
-            gridPane.add(b,2,4);
+            gridPane.add(b, 2, 4);
             b.setOnAction(a -> {
                 Item i = new Item(t2.getText(), t3.getText(), Integer.parseInt(t4.getText()), t1.getText(), Double.parseDouble(t5.getText()));
                 Invlist1.add(i);
@@ -270,6 +288,7 @@ public class HelloApplication extends Application {
                 tableView.refresh();
             });
         });
+        //inventory management Scene complete
         //Showing the primary Scene
         stage.setScene(InvoScene2);
         stage.show();
@@ -332,5 +351,14 @@ public class HelloApplication extends Application {
             }
         }
         return null;
+    }
+    private ArrayList<Patient> addPatientstoObserve()
+    {
+        ArrayList<Patient> arr = new ArrayList<>();
+        for (User user:allUsers) {
+            if (user instanceof Patient)
+                arr.add((Patient)user);
+        }
+        return arr;
     }
 }

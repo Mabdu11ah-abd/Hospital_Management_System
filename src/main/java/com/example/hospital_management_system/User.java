@@ -7,14 +7,15 @@ public class User {
     // Admin, Doctor ,Patient
 
     public void RegisterUser(String username, String password,String ID) {
-        setName(username);
+        setname(username);
         setPassword(password);
         setID(ID);        
     }
-    public String getName() {
+
+    public String getname() {
         return name;
     }
-    public void setName(String username) {
+    public void setname(String username) {
         this.name = username;
     }
     public String getPassword() {
@@ -23,7 +24,7 @@ public class User {
     public void setPassword(String password) {
         this.Password = password;
     }
-        public String getID() {
+    public String getID() {
         return ID;
     }
     public void setID(String iD) {

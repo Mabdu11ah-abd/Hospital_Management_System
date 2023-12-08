@@ -48,10 +48,6 @@ public class Patient extends User {
         this.BedUsed.setDaysOccupied(0);// reset bed occupied to zero to show that patient is discharged :
     }
 
-    public String getID() {
-        return ID;
-    }
-
     @Override
     public String toString() {
         return "Patient [name=" + name + ", ID=" + ID + ", age=" + age + ", address=" + address + "]";
@@ -87,5 +83,17 @@ public class Patient extends User {
 
     public void setDoctorIncharge(Doctor doctorIncharge) {
         DoctorIncharge = doctorIncharge;
+    }
+    public String getname()
+    {
+        return name;
+    }
+
+    public int getage() {
+        return age;
+    }
+
+    public String getaddress() {
+        return address;
     }
 }
