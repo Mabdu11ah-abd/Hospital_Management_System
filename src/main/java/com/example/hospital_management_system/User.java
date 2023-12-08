@@ -1,7 +1,7 @@
 package com.example.hospital_management_system;
 
 public class User {
-    protected String name;
+    protected String Name;
     protected String ID;
     protected String Password;
     // Admin, Doctor ,Patient
@@ -12,11 +12,9 @@ public class User {
         setID(ID);        
     }
 
-    public String getname() {
-        return name;
-    }
+
     public void setname(String username) {
-        this.name = username;
+        this.Name = username;
     }
     public String getPassword() {
         return Password;
@@ -30,6 +28,11 @@ public class User {
     public void setID(String iD) {
         ID = iD;
     }
+
+    public String getName() {
+        return Name;
+    }
+
     // Method to authenticate the user
     public boolean login(String enteredID, String enteredPassword) {
         if (enteredID.equals(ID) && enteredPassword.equals(Password)) {
@@ -40,6 +43,6 @@ public class User {
     }
     // Method to logout.
     public void logout() {
-        System.out.println("Logging out. Goodbye, " + name + "!");
+        System.out.println("Logging out. Goodbye, " + Name + "!");
     }
 }

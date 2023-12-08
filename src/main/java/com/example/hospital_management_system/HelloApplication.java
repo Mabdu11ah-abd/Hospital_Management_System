@@ -1,4 +1,5 @@
 package com.example.hospital_management_system;
+
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -16,7 +17,7 @@ import javafx.event.EventHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+//Testing Push
 public class HelloApplication extends Application {
     ArrayList<User> allUsers;
     Bed allBeds[];
@@ -144,7 +145,7 @@ public class HelloApplication extends Application {
         });
         PatientMenuScene = new Scene(patientMenu, 500, 500);
         //Admin Menu
-        /*adding Doctor 1s, Scheduling Appointment 1s, Managing inventory 6s,Edit 3s, view 2s*/
+        /*adding Doctor 1s, Scheduling Appointment 1s, Managing inventory 6s, view 1s*/
         Label AdminOption = new Label("Choose Your Option");
         Button Adminb1 = new Button("Add Doctor");
         Button Adminb2 = new Button("Schedule Appointment");
@@ -165,27 +166,80 @@ public class HelloApplication extends Application {
         Adminb6.setOnAction(e -> {
             stage.setScene(s1);
         });
+        //Adding Doctor Scene
+        Label addDocl1 = new Label("Name");
+        Label addDocl2 = new Label("ID");
+        Label addDocl3 = new Label("Specialization");
+        Label addDocl4 = new Label("Password");
+        TextField addDocT1 = new TextField();
+        TextField addDocT2 = new TextField();
+        TextField addDocT3 = new TextField();
+        TextField addDocT4 = new TextField();
+        GridPane addDocPane = new GridPane();
+        // Add elements to GridPane
+        addDocPane.add(addDocl1, 0, 0);
+        addDocPane.add(addDocl2, 0, 1);
+        addDocPane.add(addDocl3, 0, 2);
+        addDocPane.add(addDocl4, 0, 3);
+
+        addDocPane.add(addDocT1, 1, 0);
+        addDocPane.add(addDocT2, 1, 1);
+        addDocPane.add(addDocT3, 1, 2);
+        addDocPane.add(addDocT4, 1, 3);
+        Button addDocb1 = new Button("Submit");
+        Button addDocb2 = new Button("Go back");
+        addDocPane.add(addDocb1, 2, 4);
+        addDocPane.add(addDocb2, 0, 4);
+        Scene addDocScene = new Scene(addDocPane, 500, 500);
+        addDocb1.setOnAction(e -> {
+            Doctor d = new Doctor(addDocl1.getText(), addDocl4.getText(), addDocl2.getText(), addDocl3.getText());
+            allUsers.add(d);
+            addDocT1.clear();
+            addDocT2.clear();
+            addDocT3.clear();
+            addDocT4.clear();
+        });
+        addDocb2.setOnAction(e -> {
+            stage.setScene(AdminMenuScene);
+        });
+        Adminb1.setOnAction(e -> stage.setScene(addDocScene));
+        //Schedule Appointment Scene
+        Label ScheduleAppointmentl1 = new Label("Doctor ID:");
+        Label ScheduleAppointmentl2 = new Label("Patient ID");
+        Label ScheduleAppointmentl3 = new Label("Date");
+        Label ScheduleAppointmentl4 = new Label("Time");
+        TextField ScheduleAppointmentT1 = new TextField();
+        TextField ScheduleAppointmentT2 = new TextField();
+        TextField ScheduleAppointmentT3 = new TextField();
+        TextField ScheduleAppointmentT4 = new TextField();
+        GridPane ScheduleAppointmentpane = new GridPane();
+        //schedule Appointment Scene
+
         //View and Edit Patients Scene
         //Buttons
         Button viewAllPatientsb1 = new Button();
         //Observable arraylist and table view
         ObservableList<Patient> patientsList = FXCollections.observableArrayList(addPatientstoObserve());
         System.out.println(patientsList.size());
-        TableView<Patient> patientTable= new TableView<>();
+        TableView<Patient> patientTable = new TableView<>();
         //table Column for each attribute
-        TableColumn<Patient,String> patientIdColumn = new TableColumn<>("ID");
-        patientIdColumn.setCellValueFactory(data->new SimpleStringProperty(data.getValue().getID()));
-        TableColumn<Patient,String> patientNameColumn = new TableColumn<>("Name");
-        patientNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        TableColumn<Patient,String> patientAddressColumn= new TableColumn<>("Address");
+
+        TableColumn<Patient, String> patientIdColumn = new TableColumn<>("ID");
+        patientIdColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        TableColumn<Patient, String> patientNameColumn = new TableColumn<>("Name");
+        patientNameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        TableColumn<Patient, String> patientAddressColumn = new TableColumn<>("Address");
         patientAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-        TableColumn<Patient,Integer> patientAgeColumn = new TableColumn<>("Age");
-        patientAgeColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
-        patientTable.getColumns().addAll(patientIdColumn,patientNameColumn,patientAgeColumn,patientAddressColumn);
+        TableColumn<Patient, Integer> patientAgeColumn = new TableColumn<>("Age");
+        patientAgeColumn.setCellValueFactory(new PropertyValueFactory<>("Age"));
+        patientTable.getColumns().addAll(patientIdColumn, patientNameColumn, patientAgeColumn, patientAddressColumn);
+        patientTable.getItems().addAll(patientsList);
         //creating the scene for the table
-        Scene viewAllPatient = new Scene(patientTable,500,500);
+        Scene viewAllPatient = new Scene(patientTable, 500, 500);
         //setting actions on button
-        Adminb5.setOnAction(e->{stage.setScene(viewAllPatient);patientTable.refresh();});
+        Adminb5.setOnAction(e -> {
+            stage.setScene(viewAllPatient);
+        });
         //view and edit Patients Scene
         //Inventory Management Scene //Complete For now
         // buttons for scene
@@ -194,7 +248,6 @@ public class HelloApplication extends Application {
         Button Invob4 = new Button("Remove");
         Button Invob5 = new Button("Add Item");
         //Creating and setting action for inventory scene
-
         ObservableList<Item> Invlist1 = FXCollections.observableArrayList(GUIinv.getItemsinInventory());
         TableView<Item> tableView = new TableView<>(Invlist1);
         // Create TableColumn for each attribute
@@ -352,12 +405,12 @@ public class HelloApplication extends Application {
         }
         return null;
     }
-    private ArrayList<Patient> addPatientstoObserve()
-    {
+
+    private ArrayList<Patient> addPatientstoObserve() {
         ArrayList<Patient> arr = new ArrayList<>();
-        for (User user:allUsers) {
+        for (User user : allUsers) {
             if (user instanceof Patient)
-                arr.add((Patient)user);
+                arr.add((Patient) user);
         }
         return arr;
     }

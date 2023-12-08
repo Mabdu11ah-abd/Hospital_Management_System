@@ -3,7 +3,7 @@ package com.example.hospital_management_system;
 import java.util.Scanner;
 
 public class Patient extends User {
-    private int age;
+    private int Age;
     private String address;
     private Doctor DoctorIncharge;
     private Bed BedUsed;
@@ -14,10 +14,10 @@ public class Patient extends User {
     }
 
     public Patient(String username, String userID, String userPassword, int age, String address) {
-        name = username;
+        Name = username;
         ID = userID;
         Password = userPassword;
-        this.age = age;
+        this.Age = age;
         this.address = address;
     }
 
@@ -26,7 +26,7 @@ public class Patient extends User {
         Scanner input = new Scanner(System.in);
         // taking user input for item attributes
         System.out.println("Enter the name of the patient : ");
-        this.name = input.nextLine();
+        this.Name = input.nextLine();
         System.out.println("Enter the ID of the patient : ");
         this.ID = input.nextLine();
         System.out.println("Enter the Address of the patient : ");
@@ -34,7 +34,7 @@ public class Patient extends User {
         System.out.println("Enter Password : ");
         Password = input.nextLine();
         System.out.println("Enter the age of the patient : ");
-        this.age = input.nextInt();
+        this.Age = input.nextInt();
     }
 
 
@@ -50,7 +50,7 @@ public class Patient extends User {
 
     @Override
     public String toString() {
-        return "Patient [name=" + name + ", ID=" + ID + ", age=" + age + ", address=" + address + "]";
+        return "Patient [name=" + Name + ", ID=" + ID + ", age=" + Age + ", address=" + address + "]";
     }
 
     public MedicalRecord getRecord() {
@@ -84,16 +84,20 @@ public class Patient extends User {
     public void setDoctorIncharge(Doctor doctorIncharge) {
         DoctorIncharge = doctorIncharge;
     }
-    public String getname()
+    public String getName()
     {
-        return name;
+        return Name;
+    }
+    public int getAge() {
+        return Age;
     }
 
-    public int getage() {
-        return age;
-    }
-
-    public String getaddress() {
+    public String getAddress() {
         return address;
     }
+    public String getID()
+    {
+        return ID;
+    }
+
 }

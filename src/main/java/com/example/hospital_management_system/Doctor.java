@@ -11,14 +11,14 @@ public class Doctor extends User {
     public Doctor(String username, String password, String id, String sp) {
         ID = id;
         Specialization = sp;
-        name = username;
+        Name = username;
         Password = password;
     }
 
     public Doctor() {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter the Name of the Doctor : ");
-        this.name = input.nextLine();
+        this.Name = input.nextLine();
         System.out.println("Enter the ID of the Doctor : ");
         this.ID = input.nextLine();
         System.out.println("Enter Specialization of the Doctor : ");
@@ -128,9 +128,10 @@ public class Doctor extends User {
         }
     }
 //getter method of class
-    public String getSpecialization() {
-        return Specialization;
-    }
+public String getSpecialization() {
+    return Specialization;
+}
+
 
     // search patients method to be used whenever searching by id is required
     private int searchPatients(String id) {
@@ -141,9 +142,14 @@ public class Doctor extends User {
         }
         return -1;
     }
+    public String getname()
+    {
+        return Name;
+    }
+
 //to string method of the class 
     @Override
     public String toString() {
-        return "Doctor [Name= " + name + ",Specialization=" + Specialization + "ID = " + ID + "]";
+        return "Doctor [Name= " + Name + ",Specialization=" + Specialization + "ID = " + ID + "]";
     }
 }
