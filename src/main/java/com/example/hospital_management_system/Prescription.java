@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Prescription {
     Doctor Practitioner;
     Patient prescribedto;
-    private String medicines;
-    private Date PrescriptionDate;
+    private String Medicines;
+    private String PrescriptionDate;
     public Prescription(Doctor doctor, Patient patient) {
         Scanner input = new Scanner(System.in);
 
@@ -20,10 +20,10 @@ public class Prescription {
         // Set Medicines
         System.out.println("Enter Prescribed Medicines:");
         input.nextLine(); // consume the newline character
-        this.medicines = input.nextLine();
+        this.Medicines = input.nextLine();
 
         // Set Prescription Date
-        this.PrescriptionDate = new Date(); // Current date and time
+         // Current date and time
 
         System.out.println("Prescription has been written successfully.");
     }
@@ -33,8 +33,19 @@ public class Prescription {
         System.out.println("Patient INFO");
         System.out.println(prescribedto);
         System.out.println("Doctor INFO ");
-        System.out.println("Prescribed Medicines : \n" + medicines );
+        System.out.println("Prescribed Medicines : \n" + Medicines);
         System.out.println("Prescribed Date to patient :" + PrescriptionDate);
         
+    }
+    public Doctor getPractitioner() {
+        return Practitioner;
+    }
+
+    public String getMedicines() {
+        return Medicines;
+    }
+
+    public String getPrescriptionDate() {
+        return PrescriptionDate;
     }
 }

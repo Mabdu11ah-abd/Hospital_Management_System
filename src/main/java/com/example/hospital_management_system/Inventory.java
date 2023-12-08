@@ -22,11 +22,12 @@ public class Inventory {
                 System.out.println("Quantity Exceeds inventory size : ");
             return ItemsinInventory.get(index).getPrice() * buyQuantity;
         } else {
-            System.out.println("Invalid ID entered : ");
+            System.out.println("Invalid ID entered :");
         }
-
         return 0;
     }
+
+
     public void addHardcoded(Item item)
     {
         ItemsinInventory.add(item);

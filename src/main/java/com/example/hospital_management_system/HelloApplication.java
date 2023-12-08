@@ -1,4 +1,5 @@
 package com.example.hospital_management_system;
+
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,9 +14,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
+
 //Testing Push
 public class HelloApplication extends Application {
     ArrayList<User> allUsers;
@@ -120,7 +124,7 @@ public class HelloApplication extends Application {
             patientAlert.setTitle("CONFIRMATION");
             patientAlert.setContentText("DO U WANT TO LOGOUT");
             Optional<ButtonType> result = patientAlert.showAndWait();
-            if(result.get() == ButtonType.OK){
+            if (result.get() == ButtonType.OK) {
                 stage.setScene(s1);
             }
         });
@@ -133,7 +137,6 @@ public class HelloApplication extends Application {
         Button patientb3 = new Button("Buy Medicine");
         Button patientb4 = new Button("Generate Invoice");
         Button patientb5 = new Button("View Doctors");
-        Button patientb6 = new Button("Assign Doctors");
         Button patientb7 = new Button("Log out");
         GridPane patientMenu = new GridPane();
         patientMenu.add(patientOptions, 0, 0);
@@ -142,13 +145,12 @@ public class HelloApplication extends Application {
         patientMenu.add(patientb3, 0, 3);
         patientMenu.add(patientb4, 0, 4);
         patientMenu.add(patientb5, 0, 5);
-        patientMenu.add(patientb6, 0, 6);
-        patientMenu.add(patientb7, 0, 7);
+        patientMenu.add(patientb7, 0, 6);
         patientMenu.setAlignment(Pos.BASELINE_CENTER);
         patientMenu.setVgap(35);
         PatientMenuScene = new Scene(patientMenu, 500, 500);
         //Buttons for Patient Menu
-        patientb1.setOnAction(e-> {//shows patient info
+        patientb1.setOnAction(e -> {//shows patient info
             searchUsers(login1.getText());
             Button patientCurrentInfoBtn = new Button("Back");
             Label patientcurrentinfol1 = new Label("Name of Patient");
@@ -158,34 +160,101 @@ public class HelloApplication extends Application {
             Label patientcurrentinfol5 = new Label(CurrentUser[0].getName());
             Label patientcurrentinfol6 = new Label(CurrentUser[0].getID());
             Label patientcurrentinfol7 = new Label(Integer.toString(((Patient) CurrentUser[0]).getAge()));
-            Label patientcurrentinfol8 = new Label(((Patient)CurrentUser[0]).getAddress());
+            Label patientcurrentinfol8 = new Label(((Patient) CurrentUser[0]).getAddress());
             GridPane patientCurrentInfoGrid = new GridPane();
-            patientCurrentInfoGrid.add(patientcurrentinfol1 , 3,5);
-            patientCurrentInfoGrid.add(patientcurrentinfol2 , 3,6);
-            patientCurrentInfoGrid.add(patientcurrentinfol3 , 3,7);
-            patientCurrentInfoGrid.add(patientcurrentinfol4 , 3,8);
-            patientCurrentInfoGrid.add(patientcurrentinfol5 , 4,5);
-            patientCurrentInfoGrid.add(patientcurrentinfol6 , 4,6);
-            patientCurrentInfoGrid.add(patientcurrentinfol7 , 4,7);
-            patientCurrentInfoGrid.add(patientcurrentinfol8 , 4,8);
+            patientCurrentInfoGrid.add(patientcurrentinfol1, 3, 5);
+            patientCurrentInfoGrid.add(patientcurrentinfol2, 3, 6);
+            patientCurrentInfoGrid.add(patientcurrentinfol3, 3, 7);
+            patientCurrentInfoGrid.add(patientcurrentinfol4, 3, 8);
+            patientCurrentInfoGrid.add(patientcurrentinfol5, 4, 5);
+            patientCurrentInfoGrid.add(patientcurrentinfol6, 4, 6);
+            patientCurrentInfoGrid.add(patientcurrentinfol7, 4, 7);
+            patientCurrentInfoGrid.add(patientcurrentinfol8, 4, 8);
             patientCurrentInfoGrid.add(patientCurrentInfoBtn, 3, 10);
             patientCurrentInfoGrid.setHgap(10);
             patientCurrentInfoGrid.setVgap(10);
             patientCurrentInfoGrid.setAlignment(Pos.CENTER);
-            Scene patientCurrentInfoScene = new Scene(patientCurrentInfoGrid , 500, 500);
+            Scene patientCurrentInfoScene = new Scene(patientCurrentInfoGrid, 500, 500);
             patientCurrentInfoBtn.setOnAction(a -> stage.setScene(PatientMenuScene));
             stage.setScene(patientCurrentInfoScene);
-            stage.show();
         });
+        //Button2 medical Record Button
+        ObservableList<Prescription> prescriptionsObserve = FXCollections.observableArrayList();
+
+// Check if CurrentUser[0] is not null before accessing methods
+        if (CurrentUser[0] != null && ((Patient)CurrentUser[0]).getRecord() != null) {
+            prescriptionsObserve.addAll(((Patient)CurrentUser[0]).getRecord().getPrescriptions());
+        } else {
+            System.out.println("CurrentUser[0] or its record is null. Unable to retrieve prescriptions.");
+        }
+
+        TableView<Prescription> prescriptionTableView = new TableView<>();
+        TableColumn<Prescription, String> prescriptionDate = new TableColumn<>("Date");
+        TableColumn<Prescription,String> prescriptionDoc = new TableColumn<>("Doctor");
+        prescriptionDoc.setCellValueFactory(data->new SimpleStringProperty(data.getValue().getPractitioner().getName()));
+        prescriptionDate.setCellValueFactory(new PropertyValueFactory<>("PrescriptionDate"));
+        prescriptionTableView.getColumns().addAll(prescriptionDoc, prescriptionDate);
+        prescriptionTableView.setItems(prescriptionsObserve);
+
+        Button prescriptionBack = new Button("Back");
+        VBox prescriptionVBox = new VBox(prescriptionTableView, prescriptionBack);
+        Scene viewPrescriptionsScene = new Scene(prescriptionVBox, 500, 500);
+
+        patientb2.setOnAction(e -> {
+            stage.setScene(viewPrescriptionsScene);
+            prescriptionBack.setOnAction(a -> stage.setScene(PatientMenuScene));
+        });
+        //button 4
+        Label patientBill = new Label("Due Amount");
+        Label dueAmount = new Label();
+        HBox patientBillHbox = new HBox();
+        Button billGoback = new Button("Go back");
+        patientBillHbox.getChildren().addAll(patientBill,dueAmount,billGoback);
+        Scene patientBillScene = new Scene(patientBillHbox,500,500);
+        patientb4.setOnAction(e->{
+            stage.setScene(patientBillScene);
+            billGoback.setOnAction(a->{stage.setScene(PatientMenuScene);dueAmount.setText("");});
+            dueAmount.setText(Double.toString(((Patient)CurrentUser[0]).getBill().getDueamount()));
+        });
+
+        //button 5 doctors view
+        ObservableList<Doctor> allDoctorsObsList = FXCollections.observableArrayList(addDocstoObserve());
+        TableView<Doctor> allDoctorsview = new TableView<>();
+        TableColumn<Doctor, String> doctorName = new TableColumn<>("Name");
+        TableColumn<Doctor, String> doctorID = new TableColumn<>("ID");
+        TableColumn<Doctor, String> doctorSpeialization = new TableColumn<>("Specialization");
+        doctorName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        doctorID.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        doctorSpeialization.setCellValueFactory(new PropertyValueFactory<>("Specialization"));
+        allDoctorsview.getColumns().addAll(doctorName, doctorID, doctorSpeialization);
+        allDoctorsview.setItems(allDoctorsObsList);
+        allDoctorsview.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        VBox viewAllDocVbox = new VBox(allDoctorsview);
+        Scene viewAllDocScene = new Scene(viewAllDocVbox, 500, 500);
+        Button viewAllDocsb1 = new Button("Back");
+        Button viewAllDocsb2 = new Button("Assign");
+        HBox h = new HBox(viewAllDocsb1, viewAllDocsb2);
+        viewAllDocVbox.getChildren().add(h);
+        patientb5.setOnAction(e -> {
+            viewAllDocsb1.setOnAction(a -> {
+                stage.setScene(PatientMenuScene);
+            });
+            viewAllDocsb2.setOnAction(a -> {
+                ((Patient) CurrentUser[0]).setDoctorIncharge(allDoctorsview.getSelectionModel().getSelectedItem());
+                System.out.println(((Patient) CurrentUser[0]).getDoctorIncharge());
+            });
+            stage.setScene(viewAllDocScene);
+        });
+
         patientb7.setOnAction(e -> {
             Alert patientAlert = new Alert(Alert.AlertType.CONFIRMATION);
             patientAlert.setTitle("CONFIRMATION");
             patientAlert.setContentText("DO U WANT TO LOGOUT");
             Optional<ButtonType> result = patientAlert.showAndWait();
-            if(result.get() == ButtonType.OK){
+            if (result.get() == ButtonType.OK) {
                 stage.setScene(s1);
-         }
-});
+            }
+        });
 
         //Patient Menu
         //Admin Menu
@@ -210,7 +279,7 @@ public class HelloApplication extends Application {
             patientAlert.setTitle("CONFIRMATION");
             patientAlert.setContentText("DO U WANT TO LOGOUT");
             Optional<ButtonType> result = patientAlert.showAndWait();
-            if(result.get() == ButtonType.OK){
+            if (result.get() == ButtonType.OK) {
                 stage.setScene(s1);
             }
         });
@@ -269,10 +338,12 @@ public class HelloApplication extends Application {
         ScheduleAppointmentpane.add(ScheduleAppointmentT3, 1, 2);
         ScheduleAppointmentpane.add(ScheduleAppointmentl4, 0, 3);
         ScheduleAppointmentpane.add(ScheduleAppointmentT4, 1, 3);
-        ScheduleAppointmentpane.add(ScheduleAppointmentb1,2,4);
-        Scene ScheduleapScene = new Scene(ScheduleAppointmentpane,500,500);
-        Adminb2.setOnAction(e -> {stage.setScene(ScheduleapScene);});
-        ScheduleAppointmentb1.setOnAction(e->{
+        ScheduleAppointmentpane.add(ScheduleAppointmentb1, 2, 4);
+        Scene ScheduleapScene = new Scene(ScheduleAppointmentpane, 500, 500);
+        Adminb2.setOnAction(e -> {
+            stage.setScene(ScheduleapScene);
+        });
+        ScheduleAppointmentb1.setOnAction(e -> {
             Patient p = null;
             Doctor d = null;
             if (searchUsers(ScheduleAppointmentT1.getText()) != -1) {
@@ -503,14 +574,27 @@ public class HelloApplication extends Application {
             });
         });
         //Inventory Button from Patient
-        patientb3.setOnAction(e->{
+        patientb3.setOnAction(e -> {
             Button b1 = new Button("Buy");
-            Button b2 = new Button ("Back");
+            Button b2 = new Button("Back");
             GridPane gridPane = new GridPane();
-            VBox v = new VBox();
-            Scene patientInventory =new Scene(b1);
+            gridPane.add(b1, 0, 0);
+            gridPane.add(b2, 2, 0);
+            TextField t1 = new TextField();
+            gridPane.add(t1, 1, 0);
+            VBox v = new VBox(tableView, gridPane);
+            Scene patientInventory = new Scene(v);
             stage.setScene(patientInventory);
-                });
+            b2.setOnAction(a -> stage.setScene(PatientMenuScene));
+            b1.setOnAction(a -> {
+                        Item i = tableView.getSelectionModel().getSelectedItem();
+                        double total = i.getTotal(Integer.parseInt(t1.getText()));
+                        ((Patient) CurrentUser[0]).UpdateBilling(total);
+                        tableView.refresh();
+                        t1.clear();
+                    }
+            );
+        });
         //inventory management Scene complete
         //Showing the primary Scene
         stage.setScene(InvoScene2);
@@ -581,6 +665,15 @@ public class HelloApplication extends Application {
         for (User user : allUsers) {
             if (user instanceof Patient)
                 arr.add((Patient) user);
+        }
+        return arr;
+    }
+
+    private ArrayList<Doctor> addDocstoObserve() {
+        ArrayList<Doctor> arr = new ArrayList<>();
+        for (User user : allUsers) {
+            if (user instanceof Doctor)
+                arr.add((Doctor) user);
         }
         return arr;
     }

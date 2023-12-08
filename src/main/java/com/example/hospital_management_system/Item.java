@@ -90,8 +90,12 @@ public class Item {
             {
                 System.out.println("Invalid input!!!");
             }
-
         }
+    }
+    public double getTotal(int QTY)
+    {
+        Quantity-=QTY;
+        return QTY*Price;
     }
 
     public String getItemname() {
