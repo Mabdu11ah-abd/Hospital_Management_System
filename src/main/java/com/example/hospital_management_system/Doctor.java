@@ -7,7 +7,12 @@ public class Doctor extends User {
     private String Specialization;
     private ArrayList<Patient> Patients = new ArrayList<>(20);
     private ArrayList<Appointment> appointments = new ArrayList<>();
-//Constructors of the class 
+
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    //Constructors of the class
     public Doctor(String username, String password, String id, String sp) {
         ID = id;
         Specialization = sp;
@@ -147,7 +152,11 @@ public String getSpecialization() {
         return Name;
     }
 
-//to string method of the class 
+    public ArrayList<Patient> getPatients() {
+        return Patients;
+    }
+
+    //to string method of the class
     @Override
     public String toString() {
         return "Doctor [Name= " + Name + ",Specialization=" + Specialization + "ID = " + ID + "]";

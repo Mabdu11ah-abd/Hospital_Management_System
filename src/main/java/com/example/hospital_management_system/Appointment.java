@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Appointment {
     Scanner input = new Scanner(System.in);
 
-    private String AppointmentID;
+    private String AppointmentID = "TBD";
     public String getAppointmentID() {
         return AppointmentID;
     }
@@ -13,14 +13,45 @@ public class Appointment {
     private Doctor AppointmentDoctor; // will store Doctor type Object
     private String AppointmentDate; // Google how to use Date Class
     private String Appointmenttime; // String type to be set by user
-    private String status; // can either be Pending, Finished or Cancelled;
+    private String Status; // can either be Pending, Finished or Cancelled;
 
+    public void setInput(Scanner input) {
+        this.input = input;
+    }
+
+    public void setAppointmentDate(String appointmentDate) {
+        AppointmentDate = appointmentDate;
+    }
+
+    public void setAppointmenttime(String appointmenttime) {
+        Appointmenttime = appointmenttime;
+    }
+
+    public Scanner getInput() {
+        return input;
+    }
+
+    public Patient getAppointmentPatient() {
+        return AppointmentPatient;
+    }
+
+    public Doctor getAppointmentDoctor() {
+        return AppointmentDoctor;
+    }
+
+    public String getAppointmentDate() {
+        return AppointmentDate;
+    }
+
+    public String getAppointmenttime() {
+        return Appointmenttime;
+    }
     public void setStatus(String status) {
-        this.status = status;
+        this.Status = status;
     }
 
     public String getStatus() {
-        return status;
+        return Status;
     }
 
     public Appointment(Patient appointmentPatient, Doctor appointmentDoctor, String appointmentDate, String appointmenttime) {
@@ -43,7 +74,7 @@ public class Appointment {
         this.AppointmentID=input.nextLine();
 
 
-        status = "PENDING";
+        Status = "PENDING";
         // set the details of the appointment
     }
 
@@ -74,24 +105,24 @@ public class Appointment {
         int choice = input.nextInt();
         switch (choice) {
             case 1:
-                status = "PENDING";
+                Status = "PENDING";
                 break;
             case 2:
-                status = "FINISHED";
+                Status = "FINISHED";
                 break;
             case 3:
-                status = "CANCELLED";
+                Status = "CANCELLED";
                 break;
             default:
                 System.out.println("Invalid choice");
         }
-        System.out.println("Status Updated to " + status);
+        System.out.println("Status Updated to " + Status);
     }
 
     public void CancelAppointment() {
         System.out.println("APPOINTMENT CANCELLATION SECTION");
-            this.status = "CANCELLED";
-            System.out.println("Status Successfully Updated to be " + status);
+            this.Status = "CANCELLED";
+            System.out.println("Status Successfully Updated to be " + Status);
             // Mark the Status of the Appointment as "CANCELLED"
     }
     public void ViewAppointment()

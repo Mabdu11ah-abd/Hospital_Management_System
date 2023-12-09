@@ -1,13 +1,25 @@
 package com.example.hospital_management_system;
 
-import java.util.Date;
 import java.util.Scanner;
 
 public class Prescription {
     Doctor Practitioner;
     Patient prescribedto;
+
+    public Patient getPrescribedto() {
+        return prescribedto;
+    }
+
     private String Medicines;
-    private String PrescriptionDate;
+    private String Prescriptiondate;
+
+    public Prescription(Doctor practitioner, Patient prescribedto, String medicines, String prescriptiondate) {
+        Practitioner = practitioner;
+        this.prescribedto = prescribedto;
+        Medicines = medicines;
+        Prescriptiondate = prescriptiondate;
+    }
+
     public Prescription(Doctor doctor, Patient patient) {
         Scanner input = new Scanner(System.in);
 
@@ -27,15 +39,15 @@ public class Prescription {
 
         System.out.println("Prescription has been written successfully.");
     }
-    
+
     public void DisplayPrescription() {
         System.out.println("Doctor Appointed :" + Practitioner.getName() + "\n" + Practitioner.getID());
         System.out.println("Patient INFO");
         System.out.println(prescribedto);
         System.out.println("Doctor INFO ");
         System.out.println("Prescribed Medicines : \n" + Medicines);
-        System.out.println("Prescribed Date to patient :" + PrescriptionDate);
-        
+        System.out.println("Prescribed Date to patient :" + Prescriptiondate);
+
     }
     public Doctor getPractitioner() {
         return Practitioner;
@@ -45,7 +57,7 @@ public class Prescription {
         return Medicines;
     }
 
-    public String getPrescriptionDate() {
-        return PrescriptionDate;
+    public String getPrescriptiondate() {
+        return Prescriptiondate;
     }
 }

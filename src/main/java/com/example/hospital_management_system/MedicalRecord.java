@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class MedicalRecord {
     private String AdmissionDate;
     private String DischargeDate;
-    private String Notes;
+    private String Notes = "No notes Yet";
     private ArrayList<Prescription> Prescriptions = new ArrayList<>(); // As Prescription is another class
 
     public String getAdmissionDate() {
