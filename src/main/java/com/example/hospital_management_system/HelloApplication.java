@@ -11,11 +11,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class HelloApplication extends Application {
     ArrayList<User> allUsers;
@@ -31,10 +34,12 @@ public class HelloApplication extends Application {
         final User[] CurrentUser = {null};                   //Stores the current User of the System
         stage.setTitle("Hospital Management System : ");
         //Login user Section
-        Button loginb1 = new Button("Enter");
-        Label login1 = new Label("Enter your Name : ");
-        Label login2 = new Label("Enter Your Password : ");
+        Button loginb1 = new Button("Login");
+        setStyling(loginb1, 90,35);
+        Label login1 = new Label("Enter UserName : ");
+        Label login2 = new Label("Enter Password : ");
         Button loginb2 = new Button("Register");
+        setStyling(loginb2, 90, 35);
         TextField loginField = new TextField();
         PasswordField loginPass = new PasswordField();
         GridPane loginPane = new GridPane();
@@ -74,12 +79,19 @@ public class HelloApplication extends Application {
         //Register user Section
         GridPane registerUserPane = new GridPane();
         Button Registerb1 = new Button("Enter");
+        setStyling(Registerb1 , 90, 27);
         Button Registergoback = new Button("Go back");
+        setStyling(Registergoback, 90, 27);
         Label Registerl1 = new Label("Name");
+        Registerl1.setFont(Font.font("New times Roman",12));
         Label Registerl2 = new Label("Password");
+        Registerl2.setFont(Font.font("New times Roman",12));
         Label Registerl3 = new Label("ID");
+        Registerl3.setFont(Font.font("New times Roman",12));
         Label Registerl4 = new Label("Address");
+        Registerl4.setFont(Font.font("New times Roman",12));
         Label Registerl5 = new Label("Age");
+        Registerl5.setFont(Font.font("New times Roman",12));
         TextField Registername = new TextField();
         TextField password = new TextField();
         TextField id = new TextField();
@@ -97,9 +109,10 @@ public class HelloApplication extends Application {
         registerUserPane.add(Registerl5, 0, 4);
         registerUserPane.add(patientAge, 1, 4);
         registerUserPane.add(Registerb1, 1, 5);
-        registerUserPane.add(Registergoback, 1, 6);
-        registerUserPane.setAlignment(Pos.BASELINE_CENTER);
-        registerUserPane.setVgap(35);
+        registerUserPane.add(Registergoback, 0, 5);
+        registerUserPane.setAlignment(Pos.CENTER);
+        registerUserPane.setVgap(15);
+        registerUserPane.setHgap(7);
         RegisterScene = new Scene(registerUserPane, 500, 500);
         Registergoback.setOnAction(e -> {
             stage.setScene(s1);
@@ -143,18 +156,18 @@ public class HelloApplication extends Application {
         });
         //Doctor Menu
         /* Futher Scenes for doctor menu are writing prescriptions 1s, Managing Appointments 3s,Updating Patient 1s*/
-        Label Options = new Label("Choose Your Option");
         Button doctorMenu1 = new Button("View Patients");
+        setStyling(doctorMenu1, 140, 40);
         Button doctorMenu3 = new Button("Manage Appointments");
-        Button doctorMenu4 = new Button("Update Patient Data");
+        setStyling(doctorMenu3, 140, 40);
         Button doctorMenu5 = new Button("LogOut");
+        setStyling(doctorMenu5, 140, 40);
         GridPane dMenuPane = new GridPane();
-        dMenuPane.add(Options, 0, 0);
-        dMenuPane.add(doctorMenu1, 0, 1);
-        dMenuPane.add(doctorMenu3, 0, 2);
-        dMenuPane.add(doctorMenu5, 0, 3);
-        dMenuPane.setAlignment(Pos.BASELINE_CENTER);
-        dMenuPane.setVgap(30);
+        dMenuPane.add(doctorMenu1, 4, 3);
+        dMenuPane.add(doctorMenu3, 4, 4);
+        dMenuPane.add(doctorMenu5, 4, 5);
+        dMenuPane.setAlignment(Pos.CENTER);
+        dMenuPane.setVgap(25);
         //Button 1
         ObservableList<Patient> docPatientslist = FXCollections.observableArrayList();
         if (CurrentUser[0] != null)
@@ -175,25 +188,33 @@ public class HelloApplication extends Application {
         docPatientsView.setItems(docPatientslist);
         docPatientsView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         Button docPatientsViewb1 = new Button("Back");
+        setStyling(docPatientsViewb1, 90, 26);
         Button docPatientsViewb2 = new Button("Write Prescirption");
+        setStyling(docPatientsViewb2, 90, 26);
         Button docPatientsViewb3 = new Button("Medical Record");
-        Button docPatientsViewb4 = new Button("View Medical Record");
+        setStyling(docPatientsViewb3, 90, 26);
         HBox docPatientsViewHbox = new HBox(docPatientsViewb1, docPatientsViewb2, docPatientsViewb3);
+        docPatientsViewHbox.setSpacing(7);
         VBox docPatientsViewVbox = new VBox(docPatientsView, docPatientsViewHbox);
         Scene docPatientViewScene = new Scene(docPatientsViewVbox, 500, 500);
         Label docPrescriptionl1 = new Label("Patient:");
+        docPrescriptionl1.setFont(Font.font("New times Roman",12));
         Label docPrescriptionl2 = new Label("");
+        docPrescriptionl2.setFont(Font.font("New times Roman",12));
         Label docPrescriptionl3 = new Label("Date:");
+        docPrescriptionl3.setFont(Font.font("New times Roman",12));
         Button docPrescriptionb1 = new Button("Submit");
+        setStyling(docPrescriptionb1, 90, 27);
         TextField docPrescriptionT1 = new TextField();
         TextField docPrescriptionT2 = new TextField();
         GridPane docPrescriptionpane = new GridPane();
-        docPrescriptionpane.add(docPrescriptionl1, 0, 0);
-        docPrescriptionpane.add(docPrescriptionl2, 1, 0);
-        docPrescriptionpane.add(docPrescriptionl3, 0, 1);
-        docPrescriptionpane.add(docPrescriptionT1, 1, 1);
-        docPrescriptionpane.add(docPrescriptionT2, 0, 2);
-        docPrescriptionpane.add(docPrescriptionb1, 0, 3);
+        docPrescriptionpane.add(docPrescriptionl1, 3, 4);
+        docPrescriptionpane.add(docPrescriptionl2, 4, 4);
+        docPrescriptionpane.add(docPrescriptionl3, 3, 6);
+        docPrescriptionpane.add(docPrescriptionT1, 4, 6);
+        docPrescriptionpane.add(docPrescriptionb1, 4, 7);
+        docPrescriptionpane.setVgap(10);
+        docPrescriptionpane.setAlignment(Pos.CENTER);
         Scene writePrescriptionScene = new Scene(docPrescriptionpane, 500, 500);
         doctorMenu1.setOnAction(e ->
         {
@@ -266,11 +287,17 @@ public class HelloApplication extends Application {
                         );
                         prestableView.setItems(observableList);
                         Label presl1 = new Label("Notes");
+                        presl1.setFont(Font.font("New times Roman",12));
                         Label presl2 = new Label(docPatientsView.getSelectionModel().getSelectedItem().getRecord().getNotes());
+                        presl2.setFont(Font.font("New times Roman",12));
                         Button presb2 = new Button("Further Details");
+                        setStyling(presb2, 90, 26);
                         Button presb = new Button("back");
+                        setStyling(presb, 90, 26);
                         HBox presh = new HBox(presl1, presl2);
+                        presh.setSpacing(10);
                         HBox presh2 = new HBox(presb, presb2);
+                        presh2.setSpacing(10);
                         VBox presv = new VBox(presh, prestableView, presh2);
                         Scene press = new Scene(presv, 500, 500);
                         stage.setScene(press);
@@ -283,12 +310,18 @@ public class HelloApplication extends Application {
 
                                 Prescription prescription = prestableView.getSelectionModel().getSelectedItem();
                                 Label doctorLabel = new Label("Doctor Name: " + prescription.getPractitioner().getName());
+                                doctorLabel.setFont(Font.font("New times Roman",12));
                                 Label patientLabel = new Label("Patient Name: " + prescription.getPrescribedto().getName());
+                                patientLabel.setFont(Font.font("New times Roman",12));
                                 Label prescriptionDateLabel = new Label("Prescription Date: " + prescription.getPrescriptiondate());
+                                prescriptionDateLabel.setFont(Font.font("New times Roman",12));
                                 Label medicinesLabel = new Label("Medicines: " + prescription.getMedicines());
+                                medicinesLabel.setFont(Font.font("New times Roman",12));
                                 Button Db = new Button("Back");
+                                setStyling(Db, 90, 26);
                                 // Create a layout to organize labels
                                 VBox root = new VBox(doctorLabel, patientLabel, prescriptionDateLabel, medicinesLabel, Db);
+                                root.setSpacing(10);
                                 Db.setOnAction(d -> stage.setScene(press));
                                 // Create a scene and set it on the stage
                                 Scene scene = new Scene(root, 400, 200);
@@ -330,9 +363,13 @@ public class HelloApplication extends Application {
             appointmentTableView.setItems(observableList);
             appointmentTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             Button b1 = new Button("Go back");
+            setStyling(b1, 90, 26);
             Button b2 = new Button("Cancel");
+            setStyling(b2, 90, 26);
             Button b3 = new Button("ChangeTime");
+            setStyling(b3, 90, 26);
             HBox h = new HBox(b1, b2, b3);
+            h.setSpacing(10);
             VBox v = new VBox(appointmentTableView, h);
             b2.setOnAction(a -> {
                 try {
@@ -354,17 +391,20 @@ public class HelloApplication extends Application {
                     if (appointmentTableView.getSelectionModel().isEmpty())
                         throw new NoOptionSelectedException();
 
-                    GridPane g = new GridPane();
-                    Label dateLabel = new Label("Date:");
+                    Label dateLabel = new Label("Date");
                     TextField dateTextField = new TextField();
                     Label timeLabel = new Label("Time:");
+                    timeLabel.setFont(Font.font("New times Roman",12));
                     TextField timeTextField = new TextField();
+                    GridPane g = new GridPane();
                     g.add(dateLabel, 0, 0);
                     g.add(dateTextField, 1, 0);
                     g.add(timeLabel, 0, 1);
                     g.add(timeTextField, 1, 1);
                     Button button = new Button("Submit");
+                    button.setFont(Font.font("New times Roman",12));
                     g.add(button, 0, 2);
+                    g.setHgap(7);
                     v.getChildren().add(g);
 
                     button.setOnAction(b -> {
@@ -401,36 +441,50 @@ public class HelloApplication extends Application {
         ///////////////////////////////////////////
         //Patient Menu
         /*CurrentInfo 1s, MedicalRecord 3s,GenerateInvoice 1s, Medicine 2s, ViewDoctors 1s, AssignDoctor 1s*/
-        Label patientOptions = new Label("Choose Your Options");
         Button patientb1 = new Button("View Current Info");
+        setStyling(patientb1, 140, 40);
         Button patientb2 = new Button("View Medical Record");
+        setStyling(patientb2, 140, 40);
         Button patientb3 = new Button("Buy Medicine");
+        setStyling(patientb3, 140, 40);
         Button patientb4 = new Button("Generate Invoice");
+        setStyling(patientb4, 160, 40);
         Button patientb5 = new Button("View Doctors");
+        setStyling(patientb5, 140, 40);
         Button patientb7 = new Button("Log out");
+        setStyling(patientb7, 160, 40);
         GridPane patientMenu = new GridPane();
-        patientMenu.add(patientOptions, 0, 0);
-        patientMenu.add(patientb1, 0, 1);
-        patientMenu.add(patientb2, 0, 2);
-        patientMenu.add(patientb3, 0, 3);
-        patientMenu.add(patientb4, 0, 4);
-        patientMenu.add(patientb5, 0, 5);
-        patientMenu.add(patientb7, 0, 6);
-        patientMenu.setAlignment(Pos.BASELINE_CENTER);
+        patientMenu.add(patientb1, 3, 4);
+        patientMenu.add(patientb2, 6, 4);
+        patientMenu.add(patientb3, 3, 5);
+        patientMenu.add(patientb4, 6, 5);
+        patientMenu.add(patientb5, 3, 6);
+        patientMenu.add(patientb7, 6, 6);
+        patientMenu.setAlignment(Pos.CENTER);
         patientMenu.setVgap(35);
+        patientMenu.setHgap(30);
         PatientMenuScene = new Scene(patientMenu, 500, 500);
         //Buttons for Patient Menu
         patientb1.setOnAction(e -> {//shows patient info
             searchUsers(login1.getText());
             Button patientCurrentInfoBtn = new Button("Back");
+            setStyling(patientCurrentInfoBtn, 90, 26);
             Label patientcurrentinfol1 = new Label("Name of Patient");
+            patientcurrentinfol1.setFont(Font.font("New times Roman",12));
             Label patientcurrentinfol2 = new Label("ID of Patient");
+            patientcurrentinfol2.setFont(Font.font("New times Roman",12));
             Label patientcurrentinfol3 = new Label("Age of Patient");
+            patientcurrentinfol3.setFont(Font.font("New times Roman",12));
             Label patientcurrentinfol4 = new Label("Address of Patient");
+            patientcurrentinfol4.setFont(Font.font("New times Roman",12));
             Label patientcurrentinfol5 = new Label(CurrentUser[0].getName());
+            patientcurrentinfol5.setFont(Font.font("New times Roman",12));
             Label patientcurrentinfol6 = new Label(CurrentUser[0].getID());
+            patientcurrentinfol6.setFont(Font.font("New times Roman",12));
             Label patientcurrentinfol7 = new Label(Integer.toString(((Patient) CurrentUser[0]).getAge()));
+            patientcurrentinfol7.setFont(Font.font("New times Roman",12));
             Label patientcurrentinfol8 = new Label(((Patient) CurrentUser[0]).getAddress());
+            patientcurrentinfol8.setFont(Font.font("New times Roman",12));
             GridPane patientCurrentInfoGrid = new GridPane();
             patientCurrentInfoGrid.add(patientcurrentinfol1, 3, 5);
             patientCurrentInfoGrid.add(patientcurrentinfol2, 3, 6);
@@ -440,9 +494,9 @@ public class HelloApplication extends Application {
             patientCurrentInfoGrid.add(patientcurrentinfol6, 4, 6);
             patientCurrentInfoGrid.add(patientcurrentinfol7, 4, 7);
             patientCurrentInfoGrid.add(patientcurrentinfol8, 4, 8);
-            patientCurrentInfoGrid.add(patientCurrentInfoBtn, 3, 10);
-            patientCurrentInfoGrid.setHgap(10);
-            patientCurrentInfoGrid.setVgap(10);
+            patientCurrentInfoGrid.add(patientCurrentInfoBtn, 3, 9);
+            patientCurrentInfoGrid.setHgap(15);
+            patientCurrentInfoGrid.setVgap(20);
             patientCurrentInfoGrid.setAlignment(Pos.CENTER);
             Scene patientCurrentInfoScene = new Scene(patientCurrentInfoGrid, 500, 500);
             patientCurrentInfoBtn.setOnAction(a -> stage.setScene(PatientMenuScene));
@@ -459,6 +513,7 @@ public class HelloApplication extends Application {
         }
         TableView<Prescription> prescriptionTableView = createTableView(prescriptionsObserve);
         Button prescriptionBack = new Button("Back");
+        setStyling(prescriptionBack, 90, 27);
         VBox prescriptionVBox = new VBox(prescriptionTableView, prescriptionBack);
         Scene viewPrescriptionsScene = new Scene(prescriptionVBox, 500, 500);
 
@@ -473,10 +528,17 @@ public class HelloApplication extends Application {
         });
         //button 4
         Label patientBill = new Label("Due Amount");
+        patientBill.setFont(Font.font("New times Roman",12));
         Label dueAmount = new Label();
-        HBox patientBillHbox = new HBox();
+        GridPane patientBillHbox = new GridPane();
         Button billGoback = new Button("Go back");
-        patientBillHbox.getChildren().addAll(patientBill, dueAmount, billGoback);
+        setStyling(billGoback, 90, 26);
+        patientBillHbox.add(patientBill, 3, 4);
+        patientBillHbox.add(dueAmount, 4, 4);
+        patientBillHbox.add(billGoback, 3, 5);
+        patientBillHbox.setVgap(10);
+        patientBillHbox.setHgap(7);
+        patientBillHbox.setAlignment(Pos.CENTER);
         Scene patientBillScene = new Scene(patientBillHbox, 500, 500);
         patientb4.setOnAction(e -> {
             stage.setScene(patientBillScene);
@@ -501,8 +563,11 @@ public class HelloApplication extends Application {
         VBox viewAllDocVbox = new VBox(allDoctorsview);
         Scene viewAllDocScene = new Scene(viewAllDocVbox, 500, 500);
         Button viewAllDocsb1 = new Button("Back");
+        setStyling(viewAllDocsb1, 90, 27);
         Button viewAllDocsb2 = new Button("Assign");
+        setStyling(viewAllDocsb2, 90, 27);
         HBox h = new HBox(viewAllDocsb1, viewAllDocsb2);
+        h.setSpacing(5);
         viewAllDocVbox.getChildren().add(h);
         patientb5.setOnAction(e -> {
             viewAllDocsb1.setOnAction(a -> {
@@ -539,20 +604,24 @@ public class HelloApplication extends Application {
 
 
         /*adding Doctor 1s, Scheduling Appointment 1s, Managing inventory 6s, view 1s*/
-        Label AdminOption = new Label("Choose Your Option");
         Button Adminb1 = new Button("Add Doctor");
+        setStyling(Adminb1, 140, 40);
         Button Adminb2 = new Button("Schedule Appointment");
+        setStyling(Adminb2, 100, 40);
         Button Adminb3 = new Button("Manage Inventory");
+        setStyling(Adminb3, 100, 40);
         Button Adminb5 = new Button("View patients");
+        setStyling(Adminb5, 170, 40);
         Button Adminb6 = new Button("Logout");
+        setStyling(Adminb6, 100, 40);
         GridPane AdminMenu = new GridPane();
-        AdminMenu.add(AdminOption, 0, 0);  // (element, column, row, column span, row span)
-        AdminMenu.add(Adminb1, 0, 1);
-        AdminMenu.add(Adminb2, 0, 2);
-        AdminMenu.add(Adminb3, 0, 3);
-        AdminMenu.add(Adminb5, 0, 4);
-        AdminMenu.add(Adminb6, 0, 5);
-        AdminMenu.setAlignment(Pos.BASELINE_CENTER);
+       // (element, column, row, column span, row span)
+        AdminMenu.add(Adminb1, 3, 4);
+        AdminMenu.add(Adminb2, 5, 4);
+        AdminMenu.add(Adminb3, 3, 5);
+        AdminMenu.add(Adminb5, 5, 5);
+        AdminMenu.add(Adminb6, 4, 6);
+        AdminMenu.setAlignment(Pos.CENTER);
         AdminMenu.setVgap(35);
         Adminb6.setOnAction(e -> {
             Alert patientAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -565,27 +634,36 @@ public class HelloApplication extends Application {
         });
         //Adding Doctor Scene
         Label addDocl1 = new Label("Name");
+        addDocl1.setFont(Font.font("New times Roman", 15));
         Label addDocl2 = new Label("ID");
+        addDocl2.setFont(Font.font("New times Roman", 15));
         Label addDocl3 = new Label("Specialization");
+        addDocl3.setFont(Font.font("New times Roman", 15));
         Label addDocl4 = new Label("Password");
+        addDocl4.setFont(Font.font("New times Roman", 15));
         TextField addDocT1 = new TextField();
         TextField addDocT2 = new TextField();
         TextField addDocT3 = new TextField();
         TextField addDocT4 = new TextField();
         GridPane addDocPane = new GridPane();
         // Add elements to GridPane
-        addDocPane.add(addDocl1, 0, 0);
-        addDocPane.add(addDocl2, 0, 1);
-        addDocPane.add(addDocl3, 0, 2);
-        addDocPane.add(addDocl4, 0, 3);
-        addDocPane.add(addDocT1, 1, 0);
-        addDocPane.add(addDocT2, 1, 1);
-        addDocPane.add(addDocT3, 1, 2);
-        addDocPane.add(addDocT4, 1, 3);
+        addDocPane.add(addDocl1, 3, 4);
+        addDocPane.add(addDocl2, 3, 5);
+        addDocPane.add(addDocl3, 3, 6);
+        addDocPane.add(addDocl4, 3, 7);
+        addDocPane.add(addDocT1, 4, 4);
+        addDocPane.add(addDocT2, 4, 5);
+        addDocPane.add(addDocT3, 4, 6);
+        addDocPane.add(addDocT4, 4, 7);
+        addDocPane.setVgap(20);
+        addDocPane.setHgap(10);
         Button addDocb1 = new Button("Submit");
+        setStyling(addDocb1, 100, 35);
         Button addDocb2 = new Button("Go back");
-        addDocPane.add(addDocb1, 2, 4);
-        addDocPane.add(addDocb2, 0, 4);
+        setStyling(addDocb2, 100, 35);
+        addDocPane.add(addDocb1, 3, 8);
+        addDocPane.add(addDocb2, 4, 8);
+        addDocPane.setAlignment(Pos.CENTER);
         Scene addDocScene = new Scene(addDocPane, 500, 500);
         addDocb1.setOnAction(e -> {
             try {
@@ -607,26 +685,35 @@ public class HelloApplication extends Application {
         Adminb1.setOnAction(e -> stage.setScene(addDocScene));
         //Schedule Appointment Scene
         Button ScheduleAppointmentb2 = new Button("back");
+        setStyling(ScheduleAppointmentb2, 100, 35);
         Button ScheduleAppointmentb1 = new Button("Submit");
+        setStyling(ScheduleAppointmentb1, 100, 35);
         Label ScheduleAppointmentl1 = new Label("Doctor ID:");
+        ScheduleAppointmentl1.setFont(Font.font("New times Roman", 15));
         Label ScheduleAppointmentl2 = new Label("Patient ID");
+        ScheduleAppointmentl2.setFont(Font.font("New times Roman", 15));
         Label ScheduleAppointmentl3 = new Label("Date");
+        ScheduleAppointmentl3.setFont(Font.font("New times Roman", 15));
         Label ScheduleAppointmentl4 = new Label("Time");
+        ScheduleAppointmentl4.setFont(Font.font("New times Roman", 15));
         TextField ScheduleAppointmentT1 = new TextField();
         TextField ScheduleAppointmentT2 = new TextField();
         TextField ScheduleAppointmentT3 = new TextField();
         TextField ScheduleAppointmentT4 = new TextField();
         GridPane ScheduleAppointmentpane = new GridPane();
-        ScheduleAppointmentpane.add(ScheduleAppointmentl1, 0, 0);
-        ScheduleAppointmentpane.add(ScheduleAppointmentT1, 1, 0);
-        ScheduleAppointmentpane.add(ScheduleAppointmentl2, 0, 1);
-        ScheduleAppointmentpane.add(ScheduleAppointmentT2, 1, 1);
-        ScheduleAppointmentpane.add(ScheduleAppointmentl3, 0, 2);
-        ScheduleAppointmentpane.add(ScheduleAppointmentT3, 1, 2);
-        ScheduleAppointmentpane.add(ScheduleAppointmentl4, 0, 3);
-        ScheduleAppointmentpane.add(ScheduleAppointmentT4, 1, 3);
-        ScheduleAppointmentpane.add(ScheduleAppointmentb1, 2, 4);
-        ScheduleAppointmentpane.add(ScheduleAppointmentb2, 0, 4);
+        ScheduleAppointmentpane.add(ScheduleAppointmentl1, 3, 4);
+        ScheduleAppointmentpane.add(ScheduleAppointmentT1, 4, 4);
+        ScheduleAppointmentpane.add(ScheduleAppointmentl2, 3, 5);
+        ScheduleAppointmentpane.add(ScheduleAppointmentT2, 4, 5);
+        ScheduleAppointmentpane.add(ScheduleAppointmentl3, 3, 6);
+        ScheduleAppointmentpane.add(ScheduleAppointmentT3, 4, 6);
+        ScheduleAppointmentpane.add(ScheduleAppointmentl4, 3, 7);
+        ScheduleAppointmentpane.add(ScheduleAppointmentT4, 4, 7);
+        ScheduleAppointmentpane.add(ScheduleAppointmentb1, 3, 8);
+        ScheduleAppointmentpane.add(ScheduleAppointmentb2, 4, 8);
+        ScheduleAppointmentpane.setAlignment(Pos.CENTER);
+        ScheduleAppointmentpane.setVgap(20);
+        ScheduleAppointmentpane.setHgap(10);
         ScheduleAppointmentb2.setOnAction(e -> stage.setScene(AdminMenuScene));
         Scene ScheduleapScene = new Scene(ScheduleAppointmentpane, 500, 500);
         Adminb2.setOnAction(e -> {
@@ -670,15 +757,21 @@ public class HelloApplication extends Application {
 
         //Buttons
         Button viewAllPatientsb1 = new Button("Go back");
+        setStyling(viewAllPatientsb1, 90, 27);
         Button viewAllPatientsb2 = new Button("Edit Patient");
+        setStyling(viewAllPatientsb2, 90, 27);
         Button viewAllPatientsb3 = new Button("Appoint bed");
+        setStyling(viewAllPatientsb3, 90, 27);
         Button viewAllPatientsb4 = new Button("Free Bed");
+        setStyling(viewAllPatientsb4, 90, 27);
         HBox viewAllPatientsHbox = new HBox(viewAllPatientsb1, viewAllPatientsb2, viewAllPatientsb3, viewAllPatientsb4);
+        viewAllPatientsHbox.setSpacing(6.6);
         //Observable arraylist and table view
         TableView<Patient> patientTable = new TableView<>();
         //table Column for each attribute
         TableColumn<Patient, String> patientIdColumn = new TableColumn<>("ID");
         patientIdColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+       // patientIdColumn.set(Font.font("New Times Roman", FontWeight.BOLD,12));
         TableColumn<Patient, String> patientNameColumn = new TableColumn<>("Name");
         patientNameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
         TableColumn<Patient, String> patientAddressColumn = new TableColumn<>("Address");
@@ -725,8 +818,11 @@ public class HelloApplication extends Application {
                     throw new ButtonClickedException();
                 isClicked = true;
                 Label l1 = new Label("Name");
+                l1.setFont(Font.font("New times Roman", 12));
                 Label l3 = new Label("Address");
+                l3.setFont(Font.font("New times Roman", 12));
                 Label l4 = new Label("Age");
+                l4.setFont(Font.font("New times Roman", 12));
                 TextField t1 = new TextField();
                 TextField t3 = new TextField();
                 TextField t4 = new TextField();
@@ -740,7 +836,10 @@ public class HelloApplication extends Application {
                 viewAllPatientsVbox.getChildren().add(gridPane);
                 Patient p = patientTable.getSelectionModel().getSelectedItem();
                 Button b = new Button("Submit");
+                setStyling(b, 90, 26);
                 gridPane.add(b, 2, 2);
+                gridPane.setHgap(7);
+                gridPane.setVgap(5);
                 b.setOnAction(a -> {
                             try {
                                 if (t1.getText().isEmpty() || t3.getText().isEmpty() || t4.getText().isEmpty())
@@ -776,16 +875,21 @@ public class HelloApplication extends Application {
                 isClicked = true;
                 Patient p = patientTable.getSelectionModel().getSelectedItem();
                 Label l1 = new Label("Bed number");
+                l1.setFont(Font.font("New times Roman", 12));
                 Label l2 = new Label("days occupied");
+                l1.setFont(Font.font("New times Roman", 12));
                 TextField t1 = new TextField();
                 TextField t2 = new TextField();
                 Button submit = new Button("Submit");
+                setStyling(submit, 90, 26);
                 GridPane bedGridPane = new GridPane();
                 bedGridPane.add(l1, 0, 0);
                 bedGridPane.add(t1, 1, 0);
                 bedGridPane.add(l2, 0, 1);
                 bedGridPane.add(t2, 1, 1);
                 bedGridPane.add(submit, 2, 1);
+                bedGridPane.setVgap(5);
+                bedGridPane.setHgap(5);
                 viewAllPatientsVbox.getChildren().add(bedGridPane);
                 submit.setOnAction(a -> {
                     try {
@@ -845,9 +949,13 @@ public class HelloApplication extends Application {
         //Inventory Management Scene //Complete For now
         // buttons for scene
         Button Invob2 = new Button("Update Quantity");
+        setStyling(Invob2 , 90, 26);
         Button Invob3 = new Button("Update Price");
+        setStyling(Invob3 , 90, 26);
         Button Invob4 = new Button("Remove");
+        setStyling(Invob4 , 90, 26);
         Button Invob5 = new Button("Add Item");
+        setStyling(Invob5 , 90, 26);
         //Creating and setting action for inventory scene
         ObservableList<Item> Invlist1 = FXCollections.observableArrayList(GUIinv.getItemsinInventory());
         TableView<Item> tableView = new TableView<>(Invlist1);
@@ -864,12 +972,15 @@ public class HelloApplication extends Application {
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         // setting the selection mode of the the table view as single
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        //invonameColumn.setStyle("-fx-border-color: black; -fx-border-width:1px; ");
         // Add columns to TableView
         Button GobackFromInvtable = new Button("GO back");
+        setStyling(GobackFromInvtable, 90, 26);
         GobackFromInvtable.setOnAction(e -> stage.setScene(AdminMenuScene));
         tableView.getColumns().addAll(invoidColumn, invonameColumn, invoMenufacturerColumn, invoquantityColumn, priceColumn);
         HBox invoOptions = new HBox(GobackFromInvtable, Invob2, Invob3, Invob4, Invob5);
         VBox InvoVerticalBox = new VBox(tableView, invoOptions);
+        invoOptions.setSpacing(10);
         Scene InvoScene2 = new Scene(InvoVerticalBox, 500, 500);
         AdminMenuScene = new Scene(AdminMenu, 500, 500);
         //setting functionality on all the buttons of the scene
@@ -882,9 +993,12 @@ public class HelloApplication extends Application {
                     throw new NoOptionSelectedException();
                 isClicked = true;
                 Label l1 = new Label("New Quantity");
+                l1.setFont(Font.font("New times Roman", 12));
                 TextField T1 = new TextField();
                 Button b1 = new Button("Submit");
+                setStyling(b1, 90, 26);
                 HBox h1 = new HBox(l1, T1, b1);
+                h1.setSpacing(10);
                 InvoVerticalBox.getChildren().add(h1);
                 b1.setOnAction(a -> {
                     try {
@@ -916,9 +1030,12 @@ public class HelloApplication extends Application {
                     throw new ButtonClickedException();
                 isClicked = true;
                 Label l1 = new Label("New Price");
+                l1.setFont(Font.font("New times Roman", 12));
                 TextField T1 = new TextField();
                 Button b1 = new Button("Submit");
+                setStyling(b1, 90,26);
                 HBox h1 = new HBox(l1, T1, b1);
+                h1.setSpacing(10);
                 InvoVerticalBox.getChildren().add(h1);
                 b1.setOnAction(a -> {
                     try {
@@ -963,10 +1080,15 @@ public class HelloApplication extends Application {
                     throw new ButtonClickedException();
                 isClicked = true;
                 Label l1 = new Label("ID: ");
+                l1.setFont(Font.font("New times Roman",12));
                 Label l2 = new Label("Name: ");
+                l2.setFont(Font.font("New times Roman",12));
                 Label l3 = new Label("Manufacturer: ");
+                l3.setFont(Font.font("New times Roman",12));
                 Label l4 = new Label("Quantity: ");
+                l4.setFont(Font.font("New times Roman",12));
                 Label l5 = new Label("Price: ");
+                l5.setFont(Font.font("New times Roman",12));
                 // Create TextFields for user input
                 TextField t1 = new TextField();
                 TextField t2 = new TextField();
@@ -987,7 +1109,9 @@ public class HelloApplication extends Application {
                 gridPane.add(t5, 1, 4); // Price TextField
                 InvoVerticalBox.getChildren().add(gridPane);
                 Button b = new Button("Submit");
+                setStyling(b, 90, 26);
                 gridPane.add(b, 2, 4);
+                gridPane.setVgap(5);
                 b.setOnAction(a -> {
                     try {
                         if (t1.getText().isEmpty() || t2.getText().isEmpty() || t3.getText().isEmpty() || t4.getText().isEmpty())
@@ -1015,13 +1139,17 @@ public class HelloApplication extends Application {
         //Inventory Button from Patient
         patientb3.setOnAction(e -> {
             Button b1 = new Button("Buy");
+            setStyling(b1, 90, 27);
             Button b2 = new Button("Back");
+            setStyling(b2, 90, 27);
             GridPane gridPane = new GridPane();
             gridPane.add(b1, 0, 0);
             gridPane.add(b2, 2, 0);
+            gridPane.setAlignment(Pos.CENTER);
             TextField t1 = new TextField();
             gridPane.add(t1, 1, 0);
             VBox v = new VBox(tableView, gridPane);
+            v.setSpacing(5);
             Scene patientInventory = new Scene(v);
             stage.setScene(patientInventory);
             b2.setOnAction(a -> stage.setScene(PatientMenuScene));
@@ -1154,5 +1282,15 @@ public class HelloApplication extends Application {
         alert.setContentText(s);
         alert.show();
     }
+    public void setStyling(Button button, int sizeX, int sizeY) {
+        button.setStyle("-fx-background-color: #706FAB; -fx-text-fill: white;");
+        button.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        button.setMinSize(sizeX, sizeY);
 
+        Stream.of(button)
+                .forEach(btn -> {
+                    button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #6A92CC; -fx-text-fill: white;"));
+                    button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #706FAB; -fx-text-fill: white;"));
+                });
+    }
 }
