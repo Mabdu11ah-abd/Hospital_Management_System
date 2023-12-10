@@ -5,6 +5,9 @@ public class Bed {
     private int bedNumber;
     private boolean isOccupied=false;
 
+    public Bed() {
+    }
+
     public Bed(int bedNumber) {
         this.bedNumber=bedNumber;
     }
