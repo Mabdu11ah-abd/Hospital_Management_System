@@ -14,18 +14,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Optional;
 
-//Testing Push
 public class HelloApplication extends Application {
     ArrayList<User> allUsers;
     Bed allBeds[];
     Inventory GUIinv;
-    Scene s1, RegisterScene, DoctorMenuScene, PatientMenuScene, AdminMenuScene, s6, s7, s8, s9;
+    Scene s1, RegisterScene, DoctorMenuScene, PatientMenuScene, AdminMenuScene;
     boolean isClicked = false;
 
     @Override
@@ -213,28 +209,29 @@ public class HelloApplication extends Application {
 
                     docPrescriptionl2.setText(docPatientsView.getSelectionModel().getSelectedItem().toString());
                     stage.setScene(writePrescriptionScene);
-                    docPrescriptionb1.setOnAction(b -> {try {
-                            if(docPrescriptionT1.getText().isEmpty()||docPrescriptionT2.getText().isEmpty())
+                    docPrescriptionb1.setOnAction(b -> {
+                        try {
+                            if (docPrescriptionT1.getText().isEmpty() || docPrescriptionT2.getText().isEmpty())
                                 throw new EmptyFieldException();
-                        stage.setScene(docPatientViewScene);
-                        if (CurrentUser[0] != null && CurrentUser[0] instanceof Doctor) {
-                            Doctor doctor = (Doctor) CurrentUser[0];
+                            stage.setScene(docPatientViewScene);
+                            if (CurrentUser[0] != null && CurrentUser[0] instanceof Doctor) {
+                                Doctor doctor = (Doctor) CurrentUser[0];
 
                                 Prescription p = new Prescription(doctor, docPatientsView.getSelectionModel().getSelectedItem(), docPrescriptionT2.getText(), docPrescriptionT1.getText());
                                 docPatientsView.getSelectionModel().getSelectedItem().getRecord().addPrescription(p);
                                 docPrescriptionT2.clear();
                                 docPrescriptionT1.clear();
                                 stage.setScene(docPatientViewScene);
-                        } else {
-                            // Handle the case when CurrentUser[0] is null or not an instance of Doctor
-                            System.out.println("Error: Current user is not a Doctor.");
+                            } else {
+                                // Handle the case when CurrentUser[0] is null or not an instance of Doctor
+                                System.out.println("Error: Current user is not a Doctor.");
+                            }
+                        } catch (EmptyFieldException exp1) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setContentText("error");
+                            alert.show();
                         }
-                    }catch (EmptyFieldException exp1) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("error");
-                        alert.show();
-                    }
                     });
                 } catch (ButtonClickedException exception) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -296,15 +293,14 @@ public class HelloApplication extends Application {
                                 // Create a scene and set it on the stage
                                 Scene scene = new Scene(root, 400, 200);
                                 stage.setScene(scene);
-                            }
-                            catch (NoOptionSelectedException exception){
+                            } catch (NoOptionSelectedException exception) {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Error");
                                 alert.setContentText("error");
                                 alert.show();
                             }
                         });
-                    }catch (NoOptionSelectedException exp){
+                    } catch (NoOptionSelectedException exp) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
                         alert.setContentText("error");
@@ -345,7 +341,7 @@ public class HelloApplication extends Application {
 
                     appointmentTableView.getSelectionModel().getSelectedItem().setStatus("CANCELLED");
                     appointmentTableView.refresh();
-                }catch (NoOptionSelectedException exp){
+                } catch (NoOptionSelectedException exp) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setContentText("Please select options");
@@ -379,18 +375,12 @@ public class HelloApplication extends Application {
                             appointmentTableView.getSelectionModel().getSelectedItem().setAppointmentDate(dateLabel.getText());
                             v.getChildren().remove(g);
                             appointmentTableView.refresh();
-                        }catch (EmptyFieldException exception) {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Error");
-                            alert.setContentText("error");
-                            alert.show();
+                        } catch (EmptyFieldException exception) {
+                            throwAlert("Error");
                         }
                     });
-                }catch (NoOptionSelectedException exp){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("Please select options");
-                    alert.show();
+                } catch (NoOptionSelectedException exp) {
+                   throwAlert("Please select options");
                 }
             });
 
@@ -408,7 +398,7 @@ public class HelloApplication extends Application {
             }
         });
         DoctorMenuScene = new Scene(dMenuPane, 500, 500);
-                                  ///////////////////////////////////////////
+        ///////////////////////////////////////////
         //Patient Menu
         /*CurrentInfo 1s, MedicalRecord 3s,GenerateInvoice 1s, Medicine 2s, ViewDoctors 1s, AssignDoctor 1s*/
         Label patientOptions = new Label("Choose Your Options");
@@ -496,7 +486,6 @@ public class HelloApplication extends Application {
             });
             dueAmount.setText(Double.toString(((Patient) CurrentUser[0]).getBill().getDueamount()));
         });
-
         //button 5 doctors view
         ObservableList<Doctor> allDoctorsObsList = FXCollections.observableArrayList(addDocstoObserve());
         TableView<Doctor> allDoctorsview = new TableView<>();
@@ -516,25 +505,22 @@ public class HelloApplication extends Application {
         HBox h = new HBox(viewAllDocsb1, viewAllDocsb2);
         viewAllDocVbox.getChildren().add(h);
         patientb5.setOnAction(e -> {
-                viewAllDocsb1.setOnAction(a -> {
-                    stage.setScene(PatientMenuScene);
-                });
-                viewAllDocsb2.setOnAction(a -> {
-                    try {
-                        if (allDoctorsview.getSelectionModel().isEmpty())
-                            throw new NoOptionSelectedException();
-                        ((Patient) CurrentUser[0]).setDoctorIncharge(allDoctorsview.getSelectionModel().getSelectedItem());
-                        System.out.println(((Patient) CurrentUser[0]).getDoctorIncharge());
-                        allDoctorsview.getSelectionModel().getSelectedItem().assignpatient(((Patient) CurrentUser[0]));
-                    }catch (NoOptionSelectedException excption) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("Please select any Doctor");
-                        alert.show();
-                    }
-                });
-                stage.setScene(viewAllDocScene);
+            viewAllDocsb1.setOnAction(a -> {
+                stage.setScene(PatientMenuScene);
             });
+            viewAllDocsb2.setOnAction(a -> {
+                try {
+                    if (allDoctorsview.getSelectionModel().isEmpty())
+                        throw new NoOptionSelectedException();
+                    ((Patient) CurrentUser[0]).setDoctorIncharge(allDoctorsview.getSelectionModel().getSelectedItem());
+                    System.out.println(((Patient) CurrentUser[0]).getDoctorIncharge());
+                    allDoctorsview.getSelectionModel().getSelectedItem().assignpatient(((Patient) CurrentUser[0]));
+                } catch (NoOptionSelectedException excption) {
+                    throwAlert("Please select any Doctor");
+                }
+            });
+            stage.setScene(viewAllDocScene);
+        });
 
         patientb7.setOnAction(e -> {
             Alert patientAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -548,6 +534,10 @@ public class HelloApplication extends Application {
 
         //Patient Menu
         //Admin Menu
+        //Admin Menu
+
+
+
         /*adding Doctor 1s, Scheduling Appointment 1s, Managing inventory 6s, view 1s*/
         Label AdminOption = new Label("Choose Your Option");
         Button Adminb1 = new Button("Add Doctor");
@@ -607,11 +597,8 @@ public class HelloApplication extends Application {
                 addDocT2.clear();
                 addDocT3.clear();
                 addDocT4.clear();
-            }catch (EmptyFieldException exception) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Fields are empty");
-                alert.show();
+            } catch (EmptyFieldException exception) {
+                throwAlert("Fields are empty");
             }
         });
         addDocb2.setOnAction(e -> {
@@ -646,26 +633,37 @@ public class HelloApplication extends Application {
             stage.setScene(ScheduleapScene);
         });
         ScheduleAppointmentb1.setOnAction(e -> {
-            Patient p = null;
-            Doctor d = null;
-            if (searchUsers(ScheduleAppointmentT1.getText()) != -1) {
-                d = ((Doctor) allUsers.get(searchUsers(ScheduleAppointmentT1.getText())));
-            } else {
-                System.out.println("incorrect Id");
-            }
-            if (searchUsers(ScheduleAppointmentT2.getText()) != -1) {
-                p = ((Patient) allUsers.get(searchUsers(ScheduleAppointmentT2.getText())));
-            } else {
-                System.out.println("Incorrect ID");
-            }
-            Appointment ap = new Appointment(p, d, ScheduleAppointmentT3.getText(), ScheduleAppointmentT4.getText());
-            ap.setStatus("PENDING");
-            d.addAppointment(ap);
-            ScheduleAppointmentT1.clear();
-            ScheduleAppointmentT2.clear();
-            ScheduleAppointmentT3.clear();
-            ScheduleAppointmentT4.clear();
-        });
+                    Patient p = null;
+                    Doctor d = null;
+                    try {
+                        if (ScheduleAppointmentT1.getText().isEmpty() || ScheduleAppointmentT2.getText().isEmpty() ||
+                                ScheduleAppointmentT3.getText().isEmpty() || ScheduleAppointmentT4.getText().isEmpty())
+                            throw new EmptyFieldException();
+
+                        if (searchUsers(ScheduleAppointmentT1.getText()) != -1) {
+                            d = ((Doctor) allUsers.get(searchUsers(ScheduleAppointmentT1.getText())));
+                        } else {
+                            System.out.println("incorrect Id");
+                        }
+                        if (searchUsers(ScheduleAppointmentT2.getText()) != -1) {
+                            p = ((Patient) allUsers.get(searchUsers(ScheduleAppointmentT2.getText())));
+                        } else {
+                            System.out.println("Incorrect ID");
+                        }
+                        Appointment ap = new Appointment(p, d, ScheduleAppointmentT3.getText(), ScheduleAppointmentT4.getText());
+                        ap.setStatus("PENDING");
+                        d.addAppointment(ap);
+                    } catch (EmptyFieldException exception) {
+                        throwAlert("fields are Empty");
+                    }
+                    finally {
+                        ScheduleAppointmentT1.clear();
+                        ScheduleAppointmentT2.clear();
+                        ScheduleAppointmentT3.clear();
+                        ScheduleAppointmentT4.clear();
+                    }
+                }
+        );
         //schedule Appointment Scene
 
         //View and Edit Patients Scene
@@ -723,7 +721,9 @@ public class HelloApplication extends Application {
             try {
                 if (patientTable.getSelectionModel().isEmpty())
                     throw new NoOptionSelectedException();
-
+                if (isClicked)
+                    throw new ButtonClickedException();
+                isClicked = true;
                 Label l1 = new Label("Name");
                 Label l3 = new Label("Address");
                 Label l4 = new Label("Age");
@@ -742,38 +742,38 @@ public class HelloApplication extends Application {
                 Button b = new Button("Submit");
                 gridPane.add(b, 2, 2);
                 b.setOnAction(a -> {
-                    try {
-                        if(t1.getText().isEmpty()||t3.getText().isEmpty()||t4.getText().isEmpty())
-                            throw new EmptyFieldException();
-                        if(Integer.parseInt(t4.getText())<0 || Integer.parseInt(t4.getText())>150)
-                            throw new InvalidAgeException();
-                        p.setGuiPatient(t1.getText(), Integer.parseInt(t4.getText()), t3.getText());
-                        viewAllPatientsVbox.getChildren().remove(gridPane);
-                        patientTable.refresh();
-                    }catch (EmptyFieldException exception) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("Please fill all fields");
-                        alert.show();
-                    }catch (InvalidAgeException ab) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Invalid Attempt");
-                        alert.setContentText("Age can not be less than 0 or greater than 150 and must be number");
-                        alert.show();
-                    }
-                }
+                            try {
+                                if (t1.getText().isEmpty() || t3.getText().isEmpty() || t4.getText().isEmpty())
+                                    throw new EmptyFieldException();
+                                if (!(t4.getText().matches("\\d+")))
+                                    throw new InvalidAgeException();
+                                if ((Integer.parseInt(t4.getText()) < 0 || Integer.parseInt(t4.getText()) > 150)) {
+                                    throw new InvalidAgeException();
+                                }
+                                p.setGuiPatient(t1.getText(), Integer.parseInt(t4.getText()), t3.getText());
+                                viewAllPatientsVbox.getChildren().remove(gridPane);
+                                patientTable.refresh();
+                                isClicked = false;
+                            } catch (EmptyFieldException exception) {
+                                throwAlert("Please fill all fields");
+                            } catch (InvalidAgeException ab) {
+                            throwAlert("Age can not be less than 0 or greater than 150 and must be number");
+                            }
+                        }
                 );
-            }catch (NoOptionSelectedException excption) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Please select any patient");
-                alert.show();
+            } catch (NoOptionSelectedException excption) {
+               throwAlert("Please select any patient");
+            } catch (ButtonClickedException exception) {
+               throwAlert("Button already Clicked");
             }
         });
         viewAllPatientsb3.setOnAction(e -> {
             try {
                 if (patientTable.getSelectionModel().isEmpty())
                     throw new NoOptionSelectedException();
+                if (isClicked)
+                    throw new ButtonClickedException();
+                isClicked = true;
                 Patient p = patientTable.getSelectionModel().getSelectedItem();
                 Label l1 = new Label("Bed number");
                 Label l2 = new Label("days occupied");
@@ -788,35 +788,38 @@ public class HelloApplication extends Application {
                 bedGridPane.add(submit, 2, 1);
                 viewAllPatientsVbox.getChildren().add(bedGridPane);
                 submit.setOnAction(a -> {
-                    Bed bed = new Bed();
-                    Bed[] beds = new Bed[10];
                     try {
-                        if(t1.getText().isEmpty()||t2.getText().isEmpty())
-                        throw new EmptyFieldException();
-//                            if (beds[Integer.parseInt(t1.getText()) - 1].isOccupied()) {  // Assuming bed numbers start from 1
-//                                Alert alert = new Alert(Alert.AlertType.ERROR);
-//                                alert.setTitle("Error");
-//                                alert.setContentText("Bed already occupied");
-//                                alert.show();
-//                            }
+                        if (t1.getText().isEmpty() || t2.getText().isEmpty())
+                            throw new EmptyFieldException();
+                        if (allBeds[Integer.parseInt(t1.getText()) - 1].isOccupied()) {  // Assuming bed numbers start from 1
+                            throw new RuntimeException();
+                        }
+                        if (!t1.getText().matches("\\d+") || !t2.getText().matches("\\d+")) {
+                            throw new InvalidInputException();
+                        }
+                        if (Integer.parseInt(t1.getText()) > allBeds.length || Integer.parseInt(t1.getText()) < 0)
+                            throw new InvalidInputException();
                         p.setBedUsed(allBeds[Integer.parseInt(t1.getText()) - 1]);
                         p.getBedUsed().setDaysOccupied(Integer.parseInt(t2.getText()));
                         viewAllPatientsVbox.getChildren().remove(bedGridPane);
                         patientTable.refresh();
-                    }catch (EmptyFieldException exception) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("Please fill all fields");
-                        alert.show();
+                        isClicked = false;
+                    } catch (EmptyFieldException exception) {
+                        throwAlert("Please fill all fields");
+                    } catch (InvalidInputException invalidInputException) {
+                        throwAlert("Bed must be integer or bed does not exist");
+                    } catch (RuntimeException exception) {
+                        throwAlert("Bed is Occupied ");
                     }
                 });
-            }catch (NoOptionSelectedException excption) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Please select any patient");
-                alert.show();
+            } catch (NoOptionSelectedException excption) {
+                throwAlert("Please select any patient");
+            } catch (ButtonClickedException exception) {
+                throwAlert("Button already Clicked");
             }
+
         });
+
         viewAllPatientsb4.setOnAction(e -> {
                     try {
                         if (patientTable.getSelectionModel().isEmpty())
@@ -873,8 +876,11 @@ public class HelloApplication extends Application {
         Adminb3.setOnAction(e -> stage.setScene(InvoScene2));
         Invob2.setOnAction(e -> {
             try {
+                if (isClicked)
+                    throw new ButtonClickedException();
                 if (tableView.getSelectionModel().isEmpty())
                     throw new NoOptionSelectedException();
+                isClicked = true;
                 Label l1 = new Label("New Quantity");
                 TextField T1 = new TextField();
                 Button b1 = new Button("Submit");
@@ -882,30 +888,33 @@ public class HelloApplication extends Application {
                 InvoVerticalBox.getChildren().add(h1);
                 b1.setOnAction(a -> {
                     try {
-                        if(T1.getText().isEmpty())
+                        if (T1.getText().isEmpty())
                             throw new EmptyFieldException();
                         int i = Invlist1.indexOf(tableView.getSelectionModel().getSelectedItem());
                         Invlist1.get(i).setQuantity(Integer.parseInt(T1.getText()));
                         InvoVerticalBox.getChildren().remove(h1);
                         tableView.refresh();
-                    }catch (EmptyFieldException exception) {
+                        isClicked = false;
+                    } catch (EmptyFieldException exception) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error");
                         alert.setContentText("Please fill the textField");
                         alert.show();
                     }
                 });
-            }catch (NoOptionSelectedException excption) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Select an item");
-                alert.show();
+            } catch (NoOptionSelectedException excption) {
+                throwAlert("Select an item");
+            } catch (ButtonClickedException exception) {
+                throwAlert("Button already clicked");
             }
         });
         Invob3.setOnAction(e -> {
             try {
                 if (tableView.getSelectionModel().isEmpty())
                     throw new NoOptionSelectedException();
+                if (isClicked)
+                    throw new ButtonClickedException();
+                isClicked = true;
                 Label l1 = new Label("New Price");
                 TextField T1 = new TextField();
                 Button b1 = new Button("Submit");
@@ -915,29 +924,23 @@ public class HelloApplication extends Application {
                     try {
                         if (T1.getText().isEmpty())
                             throw new EmptyFieldException();
-                        if(Integer.parseInt(T1.getText())<0)
+                        if (Integer.parseInt(T1.getText()) < 0)
                             throw new NegativePriceException();
                         int i = Invlist1.indexOf(tableView.getSelectionModel().getSelectedItem());
                         Invlist1.get(i).setPrice(Double.parseDouble(T1.getText()));
                         InvoVerticalBox.getChildren().remove(h1);
                         tableView.refresh();
-                    }catch (EmptyFieldException exception) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("Please fill the textField");
-                        alert.show();
-                    }catch(NegativePriceException exp2){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error");
-                        alert.setContentText("Please set price greater than 0");
-                        alert.show();
+                        isClicked = false;
+                    } catch (EmptyFieldException exception) {
+                        throwAlert("Please fill the textField");
+                    } catch (NegativePriceException exp2) {
+                        throwAlert("Please set price greater than 0");
                     }
                 });
-            }catch (NoOptionSelectedException excption) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Select an item");
-                alert.show();
+            } catch (NoOptionSelectedException excption) {
+                throwAlert("No options selected");
+            } catch (ButtonClickedException exception) {
+                throwAlert("Button is already CLicked");
             }
         });
         Invob4.setOnAction(e -> {
@@ -950,55 +953,64 @@ public class HelloApplication extends Application {
                     Invlist1.remove(selected);
                 // Refresh the TableView
                 tableView.refresh();
-            }catch (NoOptionSelectedException excption) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Select an item");
-                alert.show();
+            } catch (NoOptionSelectedException excption) {
+                throwAlert("Select an item");
             }
         });
         Invob5.setOnAction(e -> {
-            Label l1 = new Label("ID: ");
-            Label l2 = new Label("Name: ");
-            Label l3 = new Label("Manufacturer: ");
-            Label l4 = new Label("Quantity: ");
-            Label l5 = new Label("Price: ");
-            // Create TextFields for user input
-            TextField t1 = new TextField();
-            TextField t2 = new TextField();
-            TextField t3 = new TextField();
-            TextField t4 = new TextField();
-            TextField t5 = new TextField();
-            // Assuming you have a GridPane named "gridPane"
-            GridPane gridPane = new GridPane();
-            gridPane.add(l1, 0, 0); // ID Label
-            gridPane.add(t1, 1, 0); // ID TextField
-            gridPane.add(l2, 0, 1); // Name Label
-            gridPane.add(t2, 1, 1); // Name TextField
-            gridPane.add(l3, 0, 2); // Manufacturer Label
-            gridPane.add(t3, 1, 2); // Manufacturer TextField
-            gridPane.add(l4, 0, 3); // Quantity Label
-            gridPane.add(t4, 1, 3); // Quantity TextField
-            gridPane.add(l5, 0, 4); // Price Label
-            gridPane.add(t5, 1, 4); // Price TextField
-            InvoVerticalBox.getChildren().add(gridPane);
-            Button b = new Button("Submit");
-            gridPane.add(b, 2, 4);
-            b.setOnAction(a -> {
-                try {
-                    if (t1.getText().isEmpty()||t2.getText().isEmpty()||t3.getText().isEmpty()||t4.getText().isEmpty())
-                        throw new EmptyFieldException();
-                    Item i = new Item(t2.getText(), t3.getText(), Integer.parseInt(t4.getText()), t1.getText(), Double.parseDouble(t5.getText()));
-                    Invlist1.add(i);
-                    InvoVerticalBox.getChildren().remove(gridPane);
-                    tableView.refresh();
-                }catch (EmptyFieldException exception) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("Please fill the textField");
-                    alert.show();
-                }
-            });
+            try {
+                if (isClicked)
+                    throw new ButtonClickedException();
+                isClicked = true;
+                Label l1 = new Label("ID: ");
+                Label l2 = new Label("Name: ");
+                Label l3 = new Label("Manufacturer: ");
+                Label l4 = new Label("Quantity: ");
+                Label l5 = new Label("Price: ");
+                // Create TextFields for user input
+                TextField t1 = new TextField();
+                TextField t2 = new TextField();
+                TextField t3 = new TextField();
+                TextField t4 = new TextField();
+                TextField t5 = new TextField();
+                // Assuming you have a GridPane named "gridPane"
+                GridPane gridPane = new GridPane();
+                gridPane.add(l1, 0, 0); // ID Label
+                gridPane.add(t1, 1, 0); // ID TextField
+                gridPane.add(l2, 0, 1); // Name Label
+                gridPane.add(t2, 1, 1); // Name TextField
+                gridPane.add(l3, 0, 2); // Manufacturer Label
+                gridPane.add(t3, 1, 2); // Manufacturer TextField
+                gridPane.add(l4, 0, 3); // Quantity Label
+                gridPane.add(t4, 1, 3); // Quantity TextField
+                gridPane.add(l5, 0, 4); // Price Label
+                gridPane.add(t5, 1, 4); // Price TextField
+                InvoVerticalBox.getChildren().add(gridPane);
+                Button b = new Button("Submit");
+                gridPane.add(b, 2, 4);
+                b.setOnAction(a -> {
+                    try {
+                        if (t1.getText().isEmpty() || t2.getText().isEmpty() || t3.getText().isEmpty() || t4.getText().isEmpty())
+                            throw new EmptyFieldException();
+                        if (!t4.getText().matches("\\d+") || !t5.getText().matches("\\d+")) {
+                            throw new InvalidInputException();
+                        }
+                        if (Integer.parseInt(t4.getText()) < 0 || Integer.parseInt(t5.getText()) < 0)
+                            throw new InvalidInputException();
+                        Item i = new Item(t2.getText(), t3.getText(), Integer.parseInt(t4.getText()), t1.getText(), Double.parseDouble(t5.getText()));
+                        Invlist1.add(i);
+                        InvoVerticalBox.getChildren().remove(gridPane);
+                        tableView.refresh();
+                        isClicked = false;
+                    } catch (EmptyFieldException exception) {
+                        throwAlert("Please fill the textField");
+                    } catch (InvalidInputException exception) {
+                        throwAlert("Invalid Input");
+                    }
+                });
+            } catch (ButtonClickedException exception) {
+                throwAlert("Button is already Clicked");
+            }
         });
         //Inventory Button from Patient
         patientb3.setOnAction(e -> {
@@ -1014,30 +1026,28 @@ public class HelloApplication extends Application {
             stage.setScene(patientInventory);
             b2.setOnAction(a -> stage.setScene(PatientMenuScene));
             b1.setOnAction(a -> {
-                try {
-                    if (tableView.getSelectionModel().isEmpty())
-                        throw new NoOptionSelectedException();
-//                    if(Integer.parseInt(t1.getText())> ){
-//                        Alert alert = new Alert(Alert.AlertType.ERROR);
-//                        alert.setTitle("Error");
-//                        alert.setContentText("We don't have that much quantity");
-//                        alert.show();
-//                    }
-                    Item i = tableView.getSelectionModel().getSelectedItem();
-                    double total = i.getTotal(Integer.parseInt(t1.getText()));
-                    ((Patient) CurrentUser[0]).UpdateBilling(total);
-                    tableView.refresh();
-                    t1.clear();
-                }catch (NoOptionSelectedException excption) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("Please select an item");
-                    alert.show();
-                }
-            }
+                        try {
+                            if (tableView.getSelectionModel().isEmpty())
+                                throw new NoOptionSelectedException();
+                            if (Integer.parseInt(t1.getText()) > tableView.getSelectionModel().getSelectedItem().getQuantity()
+                                    || Integer.parseInt(t1.getText()) < 0) {
+                                throwAlert("We don't have that much quantity");
+                            }
+                            Item i = tableView.getSelectionModel().getSelectedItem();
+                            double total = i.getTotal(Integer.parseInt(t1.getText()));
+                            ((Patient) CurrentUser[0]).UpdateBilling(total);
+                            tableView.refresh();
+                            t1.clear();
+                        } catch (NoOptionSelectedException excption) {
+                            throwAlert("Please select an item");
+                        }
+                    }
             );
         });
         //inventory management Scene complete
+
+
+        //admin complete
         //Showing the primary Scene
         stage.setScene(s1);
         stage.show();
@@ -1136,6 +1146,13 @@ public class HelloApplication extends Application {
         table.getColumns().addAll(prescriptionDoc, prescriptionDate);
         table.setItems(arr);
         return table;
+    }
+
+    private void throwAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setContentText(s);
+        alert.show();
     }
 
 }
