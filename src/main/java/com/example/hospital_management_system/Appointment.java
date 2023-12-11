@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Appointment {
     Scanner input = new Scanner(System.in);
-
     private String AppointmentID = "TBD";
 
     public void setAppointmentID(String appointmentID) {
