@@ -151,15 +151,19 @@ public class HelloApplication extends Application {
         setStyling(doctorMenu1, 140, 40);
         Button doctorMenu3 = new Button("Manage Appointments");
         setStyling(doctorMenu3, 140, 40);
-        Button doctorMenu4 = new Button("Update Patient Data");
+        Button doctorMenu4 = new Button("Change PassWord");
+        setStyling(doctorMenu4, 140, 40);
         Button doctorMenu5 = new Button("LogOut");
         setStyling(doctorMenu5, 140, 40);
         GridPane dMenuPane = new GridPane();
         dMenuPane.add(doctorMenu1, 4, 3);
         dMenuPane.add(doctorMenu3, 4, 4);
         dMenuPane.add(doctorMenu5, 4, 5);
+        dMenuPane.add(doctorMenu4, 0, 0);
         dMenuPane.setAlignment(Pos.CENTER);
         dMenuPane.setVgap(25);
+        //Button 4
+        doctorMenu4.setOnAction(e -> changePassword(CurrentUser, stage, DoctorMenuScene));
         //Button 1
         ObservableList<Patient> docPatientslist = FXCollections.observableArrayList();
         if (CurrentUser[0] != null)
@@ -267,19 +271,14 @@ public class HelloApplication extends Application {
                                 p.getRecord().getPrescriptions()
                         );
                         prestableView.setItems(observableList);
-                        Label presl1 = new Label("Notes");
-                        presl1.setFont(Font.font("New times Roman", 12));
-                        Label presl2 = new Label(docPatientsView.getSelectionModel().getSelectedItem().getRecord().getNotes());
-                        presl2.setFont(Font.font("New times Roman", 12));
                         Button presb2 = new Button("Further Details");
                         setStyling(presb2, 90, 26);
                         Button presb = new Button("back");
                         setStyling(presb, 90, 26);
-                        HBox presh = new HBox(presl1, presl2);
-                        presh.setSpacing(10);
+
                         HBox presh2 = new HBox(presb, presb2);
                         presh2.setSpacing(10);
-                        VBox presv = new VBox(presh, prestableView, presh2);
+                        VBox presv = new VBox(prestableView, presh2);
                         Scene press = new Scene(presv, 500, 500);
                         stage.setScene(press);
 
@@ -435,6 +434,8 @@ public class HelloApplication extends Application {
         setStyling(patientb5, 140, 40);
         Button patientb7 = new Button("Log out");
         setStyling(patientb7, 160, 40);
+        Button patientb8 = new Button("Change Password");
+        setStyling(patientb8, 140, 40);
         GridPane patientMenu = new GridPane();
         patientMenu.add(patientb1, 3, 4);
         patientMenu.add(patientb2, 6, 4);
@@ -442,11 +443,14 @@ public class HelloApplication extends Application {
         patientMenu.add(patientb4, 6, 5);
         patientMenu.add(patientb5, 3, 6);
         patientMenu.add(patientb7, 6, 6);
+        patientMenu.add(patientb8,0,0);
         patientMenu.setAlignment(Pos.CENTER);
         patientMenu.setVgap(35);
         patientMenu.setHgap(30);
         PatientMenuScene = new Scene(patientMenu, 500, 500);
         //Buttons for Patient Menu
+        patientb8.setOnAction(e->{changePassword(CurrentUser,stage,PatientMenuScene);});
+
         patientb1.setOnAction(e -> {//shows patient info
             searchUsers(loginl1.getText());
             Button patientCurrentInfoBtn = new Button("Back");
@@ -623,6 +627,11 @@ public class HelloApplication extends Application {
         setStyling(Adminb6, 100, 40);
         Button Adminb7 = new Button("View All Docs");
         setStyling(Adminb7, 100, 40);
+        Button Adminb8 = new Button("Change Password :");
+        setStyling(Adminb8, 100, 40);
+        Adminb8.setOnAction(e->{
+            changePassword(CurrentUser,stage,AdminMenuScene);
+        });
         GridPane AdminMenu = new GridPane();
         // (element, column, row, column span, row span)
         AdminMenu.add(Adminb1, 3, 4);
@@ -631,6 +640,7 @@ public class HelloApplication extends Application {
         AdminMenu.add(Adminb5, 5, 5);
         AdminMenu.add(Adminb6, 4, 6);
         AdminMenu.add(Adminb7, 4, 7);
+        AdminMenu.add(Adminb8,0,0);
         AdminMenu.setAlignment(Pos.CENTER);
         AdminMenu.setVgap(35);
         Adminb7.setOnAction(e -> {
@@ -642,7 +652,7 @@ public class HelloApplication extends Application {
                 allDoctorsObsList.remove(d);
                 allDoctorsview.refresh();
             });
-            viewAllDocsb1.setOnAction(a->stage.setScene(AdminMenuScene));
+            viewAllDocsb1.setOnAction(a -> stage.setScene(AdminMenuScene));
         });
         Adminb6.setOnAction(e -> {
             Alert patientAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -1210,39 +1220,6 @@ public class HelloApplication extends Application {
         }
     }
 
-    //method to intitalize all the users and beds and inventory will not be used after file handling
-    public void InitializeUsers() {
-        allUsers = new ArrayList<>(100);
-        allBeds = new Bed[50];
-        // initializing all beds with bed number
-        for (int i = 0; i < allBeds.length; i++) {
-            allBeds[i] = new Bed(i + 1);
-        }
-        // creating an admin user
-        User Admin = new User();
-        Admin.RegisterUser("Administrator", "Admin234", "A-1");
-        allUsers.add(Admin);
-        // adding hardcoded doctors to arraylist
-        allUsers.add(new Doctor("Doc1", "", "D-1", "TypeA"));
-        allUsers.add(new Doctor("Doc2", "Doc456", "D-2", "TypeB"));
-        allUsers.add(new Doctor("Doc3", "Doc789", "D-3", "TypeC"));
-        allUsers.add(new Doctor("Doc4", "DocABC", "D-4", "TypeD"));
-        allUsers.add(new Doctor("Doc5", "DocDEF", "D-5", "TypeE"));
-        doctorNum = 5;
-        // adding hardcoded patients
-        allUsers.add(new Patient("Patient1", "P-1", "", 25, "Address1"));
-        allUsers.add(new Patient("Patient2", "P-2", "Patient456", 30, "Address2"));
-        allUsers.add(new Patient("Patient3", "P-3", "Patient789", 22, "Address3"));
-        allUsers.add(new Patient("Patient4", "P-4", "PatientABC", 40, "Address4"));
-        allUsers.add(new Patient("Patient5", "P-5", "PatientDEF", 28, "Address5"));
-        patientNum = 5;
-        GUIinv = new Inventory();
-        // hardcoded items
-        GUIinv.addHardcoded(new Item("Item1", "Manufacturer1", 10, "I-1", 200));
-        GUIinv.addHardcoded(new Item("Item2", "Manufacturer2", 20, "I-2", 300));
-        GUIinv.addHardcoded(new Item("Item3", "Manufacturer3", 30, "I-3", 350));
-    }
-
     private int searchUsers(String ID) {
         for (int index = 0; index < allUsers.size(); index++) {
             User currentUser = allUsers.get(index);
@@ -1283,17 +1260,6 @@ public class HelloApplication extends Application {
         return arr;
     }
 
-    private TableView<Prescription> createTableView(ObservableList<Prescription> arr) {
-        TableView<Prescription> table = new TableView<>();
-        TableColumn<Prescription, String> prescriptionDate = new TableColumn<>("Date");
-        TableColumn<Prescription, String> prescriptionDoc = new TableColumn<>("Doctor");
-        prescriptionDoc.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPractitioner().getName()));
-        prescriptionDate.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPrescriptiondate()));
-        table.getColumns().addAll(prescriptionDoc, prescriptionDate);
-        table.setItems(arr);
-        return table;
-    }
-
     private void throwAlert(String s) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -1311,5 +1277,62 @@ public class HelloApplication extends Application {
                     button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #6A92CC; -fx-text-fill: white;"));
                     button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #706FAB; -fx-text-fill: white;"));
                 });
+    }
+
+    //method to intitalize all the users and beds and inventory will not be used after file handling
+    public void InitializeUsers() {
+        allUsers = new ArrayList<>(100);
+        allBeds = new Bed[50];
+        // initializing all beds with bed number
+        for (int i = 0; i < allBeds.length; i++) {
+            allBeds[i] = new Bed(i + 1);
+        }
+        // creating an admin user
+        User Admin = new User();
+        Admin.RegisterUser("Administrator", "Admin234", "A-1");
+        allUsers.add(Admin);
+        // adding hardcoded doctors to arraylist
+        allUsers.add(new Doctor("Doc1", "", "D-1", "TypeA"));
+        allUsers.add(new Doctor("Doc2", "Doc456", "D-2", "TypeB"));
+        allUsers.add(new Doctor("Doc3", "Doc789", "D-3", "TypeC"));
+        allUsers.add(new Doctor("Doc4", "DocABC", "D-4", "TypeD"));
+        allUsers.add(new Doctor("Doc5", "DocDEF", "D-5", "TypeE"));
+        doctorNum = 5;
+        // adding hardcoded patients
+        allUsers.add(new Patient("Patient1", "P-1", "", 25, "Address1"));
+        allUsers.add(new Patient("Patient2", "P-2", "Patient456", 30, "Address2"));
+        allUsers.add(new Patient("Patient3", "P-3", "Patient789", 22, "Address3"));
+        allUsers.add(new Patient("Patient4", "P-4", "PatientABC", 40, "Address4"));
+        allUsers.add(new Patient("Patient5", "P-5", "PatientDEF", 28, "Address5"));
+        patientNum = 5;
+        GUIinv = new Inventory();
+        // hardcoded items
+        GUIinv.addHardcoded(new Item("Item1", "Manufacturer1", 10, "I-1", 200));
+        GUIinv.addHardcoded(new Item("Item2", "Manufacturer2", 20, "I-2", 300));
+        GUIinv.addHardcoded(new Item("Item3", "Manufacturer3", 30, "I-3", 350));
+    }
+
+    public void changePassword(User[] user, Stage stage, Scene s) {
+        Label l1 = new Label("Current Password");
+        Label l2 = new Label("New Password");
+        TextField T1 = new TextField();
+        TextField T2 = new TextField();
+        Button b = new Button("Back");
+        GridPane g = new GridPane();
+        g.add(l1, 0, 0);
+        g.add(l2, 0, 1);
+        g.add(T1, 1, 0);
+        g.add(T2, 1, 1);
+        g.add(b, 0, 2);
+        b.setOnAction(e -> {
+            stage.setScene(s);
+            if (T1.getText().equals(user[0].getPassword())) {
+                user[0].setPassword(T2.getText());
+            }
+        });
+        g.setAlignment(Pos.BASELINE_CENTER);
+        Scene scene = new Scene(g, 500, 500);
+        stage.setScene(scene);
+
     }
 }

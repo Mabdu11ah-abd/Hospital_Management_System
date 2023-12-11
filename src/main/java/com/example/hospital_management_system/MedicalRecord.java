@@ -6,20 +6,8 @@ import java.util.Scanner;
 public class MedicalRecord {
     private String AdmissionDate;
     private String DischargeDate;
-    private String Notes = "No notes Yet";
     private ArrayList<Prescription> Prescriptions = new ArrayList<>(); // As Prescription is another class
 
-    public String getAdmissionDate() {
-        return AdmissionDate;
-    }
-
-    public String getDischargeDate() {
-        return DischargeDate;
-    }
-
-    public String getNotes() {
-        return Notes;
-    }
 
     public ArrayList<Prescription> getPrescriptions() {
         return Prescriptions;
@@ -31,8 +19,6 @@ public class MedicalRecord {
         AdmissionDate = input.nextLine();
         System.out.println("Enter discharge Date, Enter Admitted if not discharged : ");
         DischargeDate = input.nextLine();
-        System.out.println("Enter Notes on patient :");
-        Notes = input.nextLine();
     }
 
     // Method to add a prescription to the medical record
@@ -48,7 +34,7 @@ public class MedicalRecord {
     // Method to get data of all or latest prescription of the patient.
     public void viewMedicalRecord() {
         System.out.println(
-                "Admission Date : " + AdmissionDate + "\nDischarge Date : " + DischargeDate + "\nNotes : " + Notes);
+                "Admission Date : " + AdmissionDate + "\nDischarge Date : " + DischargeDate);
         System.out.println("Enter 1 to see all prescriptions \nEnter 2 to see latest prescription");
         Scanner input = new Scanner(System.in);
         int choice = input.nextInt();

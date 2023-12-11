@@ -76,6 +76,7 @@ public class Main {
                         ((Doctor) CurrentUser).WritePrescription();// allow doctor to write prescription for patient of
                                                                    // his choice
                     } else if (Choice == 3) {
+                        System.out.println("Enter 1 to update Medical Record Dates\nEnter 2 to Update patient Notes");
                         ((Doctor) CurrentUser).UpdatePatientNotes();// allow doctor to update patient
                     } else if (Choice == 4) {
                         ((Doctor) CurrentUser).ManageAppointments();// allow doctor to view and manage appointments
