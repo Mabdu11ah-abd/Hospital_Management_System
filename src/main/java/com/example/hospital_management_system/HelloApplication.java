@@ -15,10 +15,13 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
+
 import javafx.scene.image.Image;
+
 public class HelloApplication extends Application {
     ArrayList<User> allUsers;
     Bed allBeds[];
@@ -27,8 +30,8 @@ public class HelloApplication extends Application {
     boolean isClicked = false;//Used for making sure same button is not clicked twice
     int patientNum = 0, doctorNum = 0, appointmentNum = 0;//Used for assigning ID
     //color and BackGround
-    Color customColor = Color.rgb(46,51,71);
-    BackgroundFill backgroundFill = new BackgroundFill(customColor,null,null);
+    Color customColor = Color.rgb(46, 51, 71);
+    BackgroundFill backgroundFill = new BackgroundFill(customColor, null, null);
     Background background = new Background(backgroundFill);
 
     @Override
@@ -43,7 +46,7 @@ public class HelloApplication extends Application {
         Button loginB1 = new Button("Login");
         setStyling(loginB1, 90, 25);
         Button loginb1 = new Button("Login");
-        setStyling(loginb1, 90,25);
+        setStyling(loginb1, 90, 25);
         Label login1 = new Label("Enter UserName : ");
         login1.setStyle("-fx-text-fill: white;  -fx-font-weight: bold;");
         Label login2 = new Label("Enter Password : ");
@@ -152,6 +155,8 @@ public class HelloApplication extends Application {
                 String userAddress = address.getText();
                 Patient p = new Patient(username, userID, userPassword, age, userAddress);
                 patientsList.add(p);
+                allUsers.add(p);
+                CurrentUser[0] = p;
                 stage.setScene(PatientMenuScene);
             } catch (InvalidRegistrationException exception) {
                 throwAlert("Fields Not Complete");
@@ -228,7 +233,7 @@ public class HelloApplication extends Application {
         docPrescriptionpane.add(docPrescriptionl2, 4, 4);
         docPrescriptionpane.add(docPrescriptionl3, 3, 6);
         docPrescriptionpane.add(docPrescriptionT1, 4, 6);
-        docPrescriptionpane.add(docPrescriptionT2,4,7);
+        docPrescriptionpane.add(docPrescriptionT2, 4, 7);
         docPrescriptionpane.add(docPrescriptionb1, 4, 8);
         docPrescriptionpane.setVgap(10);
         docPrescriptionpane.setAlignment(Pos.CENTER);
@@ -268,7 +273,7 @@ public class HelloApplication extends Application {
                         }
                     });
                 } catch (ButtonClickedException exception) {
-                    throwAlert("Eror");
+                    throwAlert("Error");
                 } catch (NoOptionSelectedException exception) {
                     throwAlert("Error ");
                 }
@@ -336,7 +341,7 @@ public class HelloApplication extends Application {
                                 Scene scene = new Scene(v, 900, 650);
                                 stage.setScene(scene);
                             } catch (NoOptionSelectedException exception) {
-                               throwAlert("Error");
+                                throwAlert("Error");
                             }
                         });
                     } catch (NoOptionSelectedException exp) {
@@ -383,7 +388,7 @@ public class HelloApplication extends Application {
                     appointmentTableView.getSelectionModel().getSelectedItem().setStatus("CANCELLED");
                     appointmentTableView.refresh();
                 } catch (NoOptionSelectedException exp) {
-                   throwAlert("Error");
+                    throwAlert("Error");
                 }
             });
             b3.setOnAction(a ->
@@ -466,14 +471,16 @@ public class HelloApplication extends Application {
         patientMenu.add(patientb4, 5, 5);
         patientMenu.add(patientb5, 3, 6);
         patientMenu.add(patientb7, 5, 6);
-        patientMenu.add(patientb8,4,7);
+        patientMenu.add(patientb8, 4, 7);
         patientMenu.setBackground(background);
         patientMenu.setAlignment(Pos.CENTER);
         patientMenu.setVgap(30);
         patientMenu.setHgap(25);
         PatientMenuScene = new Scene(patientMenu, 900, 650);
         //Buttons for Patient Menu
-        patientb8.setOnAction(e->{changePassword(CurrentUser,stage,PatientMenuScene);});
+        patientb8.setOnAction(e -> {
+            changePassword(CurrentUser, stage, PatientMenuScene);
+        });
 
         patientb1.setOnAction(e -> {//shows patient info
             searchUsers(loginl1.getText());
@@ -532,7 +539,7 @@ public class HelloApplication extends Application {
             VBox v = new VBox(pview, h);
             v.setBackground(background);
             h.setBackground(background);
-            docPatientsViewVbox.setBackground(background);
+            pview.setBackground(background);
             pview.refresh();
             Scene scene = new Scene(v, 900, 650);
             stage.setScene(scene);
@@ -553,9 +560,14 @@ public class HelloApplication extends Application {
                     Button Db = new Button("Back");
                     // Create a layout to organize labels
                     VBox v1 = new VBox(doctorLabel, patientLabel, prescriptionDateLabel, medicinesLabel, Db);
+                    v1.setAlignment(Pos.CENTER);
+                    v1.setSpacing(25);
+                    v1.setBackground(background);
+                    v1.setSpacing(10);
+                    v1.setBackground(background);
                     Db.setOnAction(d -> stage.setScene(scene));
                     // Create a scene and set it on the stage
-                    Scene prescriptionscene = new Scene(v, 900, 650);
+                    Scene prescriptionscene = new Scene(v1, 900, 650);
                     stage.setScene(prescriptionscene);
                 } catch (NoOptionSelectedException exception) {
                     throwAlert("Select an Option first");
@@ -667,8 +679,8 @@ public class HelloApplication extends Application {
         setStyling(Adminb7, 170, 40);
         Button Adminb8 = new Button("Change Password");
         setStyling(Adminb8, 100, 40);
-        Adminb8.setOnAction(e->{
-            changePassword(CurrentUser,stage,AdminMenuScene);
+        Adminb8.setOnAction(e -> {
+            changePassword(CurrentUser, stage, AdminMenuScene);
         });
         GridPane AdminMenu = new GridPane();
         AdminMenu.setBackground(background);
@@ -679,7 +691,7 @@ public class HelloApplication extends Application {
         AdminMenu.add(Adminb5, 5, 5);
         AdminMenu.add(Adminb6, 4, 7);
         AdminMenu.add(Adminb7, 5, 6);
-        AdminMenu.add(Adminb8,3,6);
+        AdminMenu.add(Adminb8, 3, 6);
         AdminMenu.setAlignment(Pos.CENTER);
         AdminMenu.setVgap(35);
         Adminb7.setOnAction(e -> {
@@ -1224,13 +1236,15 @@ public class HelloApplication extends Application {
             gridPane.add(t1, 1, 0);
             TableView<Item> tv = new TableView<>();
             tv.getColumns().addAll(invoidColumn, invonameColumn, invoMenufacturerColumn, invoquantityColumn, priceColumn);
-            VBox v = new VBox(tv,gridPane);
+            VBox v = new VBox(tv, gridPane);
             tv.setItems(Invlist1);
             v.setBackground(background);
             v.setSpacing(5);
             Scene patientInventory = new Scene(v, 900, 650);
             stage.setScene(patientInventory);
-            b2.setOnAction(a -> {stage.setScene(PatientMenuScene);});
+            b2.setOnAction(a -> {
+                stage.setScene(PatientMenuScene);
+            });
             b1.setOnAction(a -> {
                         try {
                             if (tv.getSelectionModel().isEmpty())
@@ -1363,7 +1377,8 @@ public class HelloApplication extends Application {
 
     public void changePassword(User[] user, Stage stage, Scene s) {
         Label l1 = new Label("Current Password");
-        l1.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 12;-fx-text-fill: white;  -fx-font-weight: bold;");
+        l1.setStyle("-fx" +
+                "-font-family: 'Times New Roman'; -fx-font-size: 12;-fx-text-fill: white;  -fx-font-weight: bold;");
         Label l2 = new Label("New Password");
         l2.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 12;-fx-text-fill: white;  -fx-font-weight: bold;");
         TextField T1 = new TextField();
