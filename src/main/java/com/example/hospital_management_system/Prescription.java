@@ -1,8 +1,9 @@
 package com.example.hospital_management_system;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Prescription {
+public class Prescription implements Serializable {
     Doctor Practitioner;
     Patient prescribedto;
 

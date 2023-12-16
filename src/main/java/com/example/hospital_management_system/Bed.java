@@ -1,6 +1,8 @@
 package com.example.hospital_management_system;
 
-public class Bed {
+import java.io.Serializable;
+
+public class Bed implements Serializable {
     private int DaysOccupied;
     private int bedNumber;
     private boolean isOccupied=false;
@@ -56,5 +58,13 @@ public class Bed {
         DaysOccupied = daysOccupied; isOccupied=true;
     }
 
-    // Other relevant methods
+    @Override
+    public String toString() {
+        return "Bed{" +
+                "DaysOccupied=" + DaysOccupied +
+                ", bedNumber=" + bedNumber +
+                ", isOccupied=" + isOccupied +
+                '}';
+    }
+// Other relevant methods
 }

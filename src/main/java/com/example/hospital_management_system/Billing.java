@@ -1,6 +1,8 @@
 package com.example.hospital_management_system;
 
-public class Billing {
+import java.io.Serializable;
+
+public class Billing implements Serializable {
     private double Dueamount=0;
     public void GenerateInvoice(Patient p)
     {

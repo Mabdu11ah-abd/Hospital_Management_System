@@ -1,7 +1,8 @@
 package com.example.hospital_management_system;
 
+import java.io.Serializable;
 import java.util.Scanner;
-public class Item {
+public class Item implements Serializable {
     private String ItemID;
     private String Itemname;
     private String Manufacturer;

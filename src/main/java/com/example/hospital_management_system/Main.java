@@ -1,9 +1,11 @@
 package com.example.hospital_management_system;
 
+import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
+public class Main{
     public static void main(String[] args) {
         // array lists holding the total number of doctors, beds, and patients
         ArrayList<User> allUsers = new ArrayList<>(100);
@@ -35,6 +37,10 @@ public class Main {
         myInventory.addHardcoded(new Item("Item2", "Manufacturer2", 20, "I-2", 300));
         myInventory.addHardcoded(new Item("Item3", "Manufacturer3", 30, "I-3", 350));
         // Scanner variable for user input
+        FileHandling f = new FileHandling();
+        f.writeInventory(myInventory);
+        f.writeObject(allUsers);
+        f.writeBed(allBeds);
         Scanner input = new Scanner(System.in);
         // primary program loop exiting this loop exits the program
         while (true) {

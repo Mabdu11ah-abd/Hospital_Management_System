@@ -1,0 +1,4 @@
+Patient:Patient [name=Patient1, ID=P-1, age=25, address=Address1] 
+Doctor: Patient [name=Patient1, ID=P-1, age=25, address=Address1] 
+Date: 11/11/2011 
+Medicines: panadol

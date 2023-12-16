@@ -1,10 +1,11 @@
 package com.example.hospital_management_system;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Appointment {
+public class Appointment implements Serializable {
     Scanner input = new Scanner(System.in);
-    private String AppointmentID = "TBD";
+    private String AppointmentID;
 
     public void setAppointmentID(String appointmentID) {
         AppointmentID = appointmentID;

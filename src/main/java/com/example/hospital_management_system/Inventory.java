@@ -1,9 +1,10 @@
 package com.example.hospital_management_system;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Inventory {
+public class Inventory implements Serializable {
     public ArrayList<Item> getItemsinInventory() {
         return ItemsinInventory;
     }

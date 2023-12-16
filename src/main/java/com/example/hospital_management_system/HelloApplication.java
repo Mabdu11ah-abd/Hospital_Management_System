@@ -15,20 +15,18 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import javafx.scene.image.Image;
-
 public class HelloApplication extends Application {
-    ArrayList<User> allUsers;
+    ArrayList<User> allUsers = new ArrayList<>();
     Bed allBeds[];
     Inventory GUIinv;
+    FileHandling fileHandling = new FileHandling();
     Scene s1, RegisterScene, DoctorMenuScene, PatientMenuScene, AdminMenuScene;
     boolean isClicked = false;//Used for making sure same button is not clicked twice
-    int patientNum = 0, doctorNum = 0, appointmentNum = 0;//Used for assigning ID
+    int []num = new int[3];//Used for assigning ID
     //color and BackGround
     Color customColor = Color.rgb(46, 51, 71);
     BackgroundFill backgroundFill = new BackgroundFill(customColor, null, null);
@@ -143,8 +141,8 @@ public class HelloApplication extends Application {
                 String username = RegisterName.getText();
                 String userPassword = registerPassword.getText();
                 String ageText = regiseterAge.getText();
-                patientNum++;
-                String userID = "P-" + patientNum;
+                num[0]++;
+                String userID = "P-" + num[0];
                 if (!ageText.matches("\\d+")) {
                     throw new InvalidAgeException();
                 }
@@ -375,11 +373,24 @@ public class HelloApplication extends Application {
             setStyling(b2, 90, 25);
             Button b3 = new Button("ChangeTime");
             setStyling(b3, 90, 25);
-            HBox h = new HBox(b1, b2, b3);
+            Button b4  = new Button("Save File");
+            setStyling(b4,90,25);
+            HBox h = new HBox(b1, b2, b3, b4);
             h.setBackground(background);
             h.setSpacing(10);
             VBox v = new VBox(appointmentTableView, h);
             v.setBackground(background);
+            b4.setOnAction(a->{
+                try {
+                    if(appointmentTableView.getSelectionModel().isEmpty())
+                        throw new NoOptionSelectedException();
+                    fileHandling.writeAppointment(appointmentTableView.getSelectionModel().getSelectedItem());
+                }
+                catch(NoOptionSelectedException exception)
+                {
+                    throwAlert("No option selected : ");
+                }
+                });
             b2.setOnAction(a -> {
                 try {
                     if (appointmentTableView.getSelectionModel().isEmpty())
@@ -535,7 +546,10 @@ public class HelloApplication extends Application {
             Button b = new Button("Go back");
             setStyling(b, 90, 25);
             Button details = new Button("View Details");
-            HBox h = new HBox(b, details);
+            setStyling(details,90,25);
+            Button print = new Button("Save file");
+            setStyling(print,90,25);
+            HBox h = new HBox(b, details,print);
             VBox v = new VBox(pview, h);
             v.setBackground(background);
             h.setBackground(background);
@@ -543,6 +557,18 @@ public class HelloApplication extends Application {
             pview.refresh();
             Scene scene = new Scene(v, 900, 650);
             stage.setScene(scene);
+            print.setOnAction(a->{
+                try{
+                    if(pview.getSelectionModel().isEmpty())
+                        throw new NoOptionSelectedException();
+                    fileHandling.writePrescription(pview.getSelectionModel().getSelectedItem());
+                }
+                catch(NoOptionSelectedException exception)
+                {
+                    throwAlert("No option has been selected");
+                }
+            });
+
             b.setOnAction(a -> stage.setScene(PatientMenuScene));
             details.setOnAction(a -> {
                 try {
@@ -747,8 +773,8 @@ public class HelloApplication extends Application {
             try {
                 if (addDocT1.getText().isEmpty() || addDocT3.getText().isEmpty() || addDocT4.getText().isEmpty())
                     throw new EmptyFieldException();
-                doctorNum++;
-                Doctor d = new Doctor(addDocT1.getText(), addDocT4.getText(), "D-" + doctorNum, addDocT3.getText());
+                num[1]++;
+                Doctor d = new Doctor(addDocT1.getText(), addDocT4.getText(), "D-" + num[1], addDocT3.getText());
                 allUsers.add(d);
                 allDoctorsObsList.add(d);
                 addDocT1.clear();
@@ -820,7 +846,8 @@ public class HelloApplication extends Application {
                         }
                         Appointment ap = new Appointment(p, d, ScheduleAppointmentT3.getText(), ScheduleAppointmentT4.getText());
                         ap.setStatus("PENDING");
-                        ap.setAppointmentID("A-" + appointmentNum);
+                        num[2]++;
+                        ap.setAppointmentID("A-" + num[2]);
                         d.addAppointment(ap);
                     } catch (EmptyFieldException exception) {
                         throwAlert("fields are Empty");
@@ -1267,6 +1294,15 @@ public class HelloApplication extends Application {
             );
         });
         //inventory management Scene complete
+        stage.setOnCloseRequest(e->
+        {
+            System.out.println("Entered close request");
+            fileHandling.writeBed(allBeds);
+            fileHandling.writeInventory(GUIinv);
+            fileHandling.writeObject(allUsers);
+            fileHandling.writeNum(num);
+        });
+
         stage.setScene(s1);
         stage.show();
     }
@@ -1344,35 +1380,13 @@ public class HelloApplication extends Application {
 
     //method to intitalize all the users and beds and inventory will not be used after file handling
     public void InitializeUsers() {
-        allUsers = new ArrayList<>(100);
-        allBeds = new Bed[50];
-        // initializing all beds with bed number
-        for (int i = 0; i < allBeds.length; i++) {
-            allBeds[i] = new Bed(i + 1);
-        }
-        // creating an admin user
-        User Admin = new User();
-        Admin.RegisterUser("Administrator", "Admin234", "A-1");
-        allUsers.add(Admin);
-        // adding hardcoded doctors to arraylist
-        allUsers.add(new Doctor("Doc1", "", "D-1", "TypeA"));
-        allUsers.add(new Doctor("Doc2", "Doc456", "D-2", "TypeB"));
-        allUsers.add(new Doctor("Doc3", "Doc789", "D-3", "TypeC"));
-        allUsers.add(new Doctor("Doc4", "DocABC", "D-4", "TypeD"));
-        allUsers.add(new Doctor("Doc5", "DocDEF", "D-5", "TypeE"));
-        doctorNum = 5;
-        // adding hardcoded patients
-        allUsers.add(new Patient("Patient1", "P-1", "", 25, "Address1"));
-        allUsers.add(new Patient("Patient2", "P-2", "Patient456", 30, "Address2"));
-        allUsers.add(new Patient("Patient3", "P-3", "Patient789", 22, "Address3"));
-        allUsers.add(new Patient("Patient4", "P-4", "PatientABC", 40, "Address4"));
-        allUsers.add(new Patient("Patient5", "P-5", "PatientDEF", 28, "Address5"));
-        patientNum = 5;
-        GUIinv = new Inventory();
-        // hardcoded items
-        GUIinv.addHardcoded(new Item("Item1", "Manufacturer1", 10, "I-1", 200));
-        GUIinv.addHardcoded(new Item("Item2", "Manufacturer2", 20, "I-2", 300));
-        GUIinv.addHardcoded(new Item("Item3", "Manufacturer3", 30, "I-3", 350));
+      fileHandling.readUsers(allUsers);
+      allBeds = fileHandling.readBed();
+      GUIinv = fileHandling.readInventory();
+      fileHandling.readNum(num);
+        System.out.println(num[0]);
+        System.out.println(num[1]);
+        System.out.println(num[2]);
     }
 
     public void changePassword(User[] user, Stage stage, Scene s) {

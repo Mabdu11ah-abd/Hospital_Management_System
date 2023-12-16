@@ -1,6 +1,8 @@
 package com.example.hospital_management_system;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     protected String Name;
     protected String ID;
     protected String Password;

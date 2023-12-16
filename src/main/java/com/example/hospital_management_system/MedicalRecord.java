@@ -1,9 +1,10 @@
 package com.example.hospital_management_system;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MedicalRecord {
+public class MedicalRecord implements Serializable {
     private String AdmissionDate;
     private String DischargeDate;
     private ArrayList<Prescription> Prescriptions = new ArrayList<>(); // As Prescription is another class
