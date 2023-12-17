@@ -827,38 +827,57 @@ public class HelloApplication extends Application {
             stage.setScene(ScheduleapScene);
         });
         ScheduleAppointmentb1.setOnAction(e -> {
-                    Patient p = null;
-                    Doctor d = null;
-                    try {
-                        if (ScheduleAppointmentT1.getText().isEmpty() || ScheduleAppointmentT2.getText().isEmpty() ||
-                                ScheduleAppointmentT3.getText().isEmpty() || ScheduleAppointmentT4.getText().isEmpty())
-                            throw new EmptyFieldException();
+            Patient p = null;
+            Doctor d = null;
+            try {
+                if (ScheduleAppointmentT1.getText().isEmpty() || ScheduleAppointmentT2.getText().isEmpty() ||
+                        ScheduleAppointmentT3.getText().isEmpty() || ScheduleAppointmentT4.getText().isEmpty())
+                    throw new EmptyFieldException();
 
-                        if (searchUsers(ScheduleAppointmentT1.getText()) != -1) {
-                            d = ((Doctor) allUsers.get(searchUsers(ScheduleAppointmentT1.getText())));
-                        } else {
-                            System.out.println("incorrect Id");
-                        }
-                        if (searchUsers(ScheduleAppointmentT2.getText()) != -1) {
-                            p = ((Patient) allUsers.get(searchUsers(ScheduleAppointmentT2.getText())));
-                        } else {
-                            System.out.println("Incorrect ID");
-                        }
-                        Appointment ap = new Appointment(p, d, ScheduleAppointmentT3.getText(), ScheduleAppointmentT4.getText());
-                        ap.setStatus("PENDING");
-                        num[2]++;
-                        ap.setAppointmentID("A-" + num[2]);
-                        d.addAppointment(ap);
-                    } catch (EmptyFieldException exception) {
-                        throwAlert("fields are Empty");
-                    } finally {
-                        ScheduleAppointmentT1.clear();
-                        ScheduleAppointmentT2.clear();
-                        ScheduleAppointmentT3.clear();
-                        ScheduleAppointmentT4.clear();
-                    }
+                int doctorIndex = searchUsers(ScheduleAppointmentT1.getText());
+                int patientIndex = searchUsers(ScheduleAppointmentT2.getText());
+
+                if (doctorIndex != -1 && allUsers.get(doctorIndex) instanceof Doctor) {
+                    d = (Doctor) allUsers.get(doctorIndex);
+                } else {
+                    System.out.println("Incorrect Doctor ID");
                 }
-        );
+
+                if (patientIndex != -1 && allUsers.get(patientIndex) instanceof Patient) {
+                    p = (Patient) allUsers.get(patientIndex);
+                } else {
+                    System.out.println("Incorrect Patient ID");
+                }
+
+                if (d != null && p != null) {
+                    Appointment ap = new Appointment(p, d, ScheduleAppointmentT3.getText(), ScheduleAppointmentT4.getText());
+                    ap.setStatus("PENDING");
+                    num[2]++;
+                    ap.setAppointmentID("A-" + num[2]);
+                    d.addAppointment(ap);
+
+                    // Update allUsers list (if needed)
+                    // Note: This assumes allUsers is a global variable accessible in this scope
+                    if (!allUsers.contains(d)) {
+                        allUsers.add(d);
+                    }
+                    if (!allUsers.contains(p)) {
+                        allUsers.add(p);
+                    }
+
+                    System.out.println("Appointment created successfully.");
+                }
+            } catch (EmptyFieldException exception) {
+                throwAlert("Fields are empty");
+            } finally {
+                ScheduleAppointmentT1.clear();
+                ScheduleAppointmentT2.clear();
+                ScheduleAppointmentT3.clear();
+                ScheduleAppointmentT4.clear();
+                System.out.println("Current size of allUsers: " + allUsers.size());
+            }
+        });
+
         //schedule Appointment Scene
         //View and Edit Patients Scene
         //Buttons
@@ -1078,12 +1097,18 @@ public class HelloApplication extends Application {
         TableColumn<Item, Double> priceColumn = new TableColumn<>("Price");
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         // setting the selection mode of the the table view as single
+
         tableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
         //invonameColumn.setStyle("-fx-border-color: black; -fx-border-width:1px; ");
         // Add columns to TableView
         Button GobackFromInvtable = new Button("GO back");
         setStyling(GobackFromInvtable, 90, 25);
-        GobackFromInvtable.setOnAction(e -> stage.setScene(AdminMenuScene));
+        GobackFromInvtable.setOnAction(e -> {
+            ArrayList<Item> Invlist2 = new ArrayList<>(Invlist1);
+            stage.setScene(AdminMenuScene);
+            GUIinv.setItemsinInventory(Invlist2);
+        });
         tableView.getColumns().addAll(invoidColumn, invonameColumn, invoMenufacturerColumn, invoquantityColumn, priceColumn);
         HBox invoOptions = new HBox(GobackFromInvtable, Invob2, Invob3, Invob4, Invob5);
         invoOptions.setBackground(background);

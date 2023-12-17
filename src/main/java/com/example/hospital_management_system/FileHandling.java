@@ -50,6 +50,7 @@ public class FileHandling implements Serializable {
         catch (IOException | NoSuchElementException | ClassNotFoundException exception)
         {
             System.out.println("File did not close properly : ");
+            exception.printStackTrace();
         }
     }
     public Inventory readInventory()

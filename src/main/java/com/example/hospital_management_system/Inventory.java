@@ -11,6 +11,10 @@ public class Inventory implements Serializable {
 
     private ArrayList<Item> ItemsinInventory = new ArrayList<Item>(20);
 
+    public void setItemsinInventory(ArrayList<Item> itemsinInventory) {
+        ItemsinInventory = itemsinInventory;
+    }
+
     public double BuyItems() {
         Scanner input = new Scanner(System.in);
 
