@@ -1,0 +1,5 @@
+Doctor: Doctor [Name= Abdullah,Specialization=Specialization1ID = D-1]
+Patient: Patient [name=Junaid, ID=P-1, age=25, address=Address1]
+ID: A-1
+Date: 123
+Time: 123

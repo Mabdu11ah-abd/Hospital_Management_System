@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 public class Appointment implements Serializable {
-    Scanner input = new Scanner(System.in);
+    transient Scanner input = new Scanner(System.in);
     private String AppointmentID;
     public void setAppointmentID(String appointmentID) {
         AppointmentID = appointmentID;

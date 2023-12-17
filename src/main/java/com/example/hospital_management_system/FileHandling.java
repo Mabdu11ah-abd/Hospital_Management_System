@@ -23,34 +23,46 @@ public class FileHandling implements Serializable {
             System.out.println("file did not open properly ");
         }
     }
-    public  void writeObject(ArrayList<User> a)
-    {
+    public void writeObject(ArrayList<User> a) {
         try {
             FileOutputStream f = new FileOutputStream("src/main/java/com/example/hospital_management_system/userFile.txt", false);
             ObjectOutputStream o = new ObjectOutputStream(f);
             o.writeObject(a);
             o.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error writing to the file: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
         }
-        catch(Exception exception)
-            {
-                System.out.println("File did not close properly ");
-            }
     }
-    public void readUsers(ArrayList<User> a)
-    {
+    public void readUsers(ArrayList<User> a) {
         try {
             ObjectInputStream i = new ObjectInputStream(new FileInputStream("src/main/java/com/example/hospital_management_system/userFile.txt"));
-             Object obj = i.readObject();
-             if (obj instanceof ArrayList)
-             {
-                 a.addAll((ArrayList<User>) obj);
-             }
-             i.close();
-        }
-        catch (IOException | NoSuchElementException | ClassNotFoundException exception)
-        {
-            System.out.println("File did not close properly : ");
-            exception.printStackTrace();
+            Object obj = i.readObject();
+            if (obj instanceof ArrayList) {
+                a.addAll((ArrayList<User>) obj);
+            }
+            i.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error reading from the file: " + e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Class not found: " + e.getMessage());
+            e.printStackTrace();
+        } catch (NoSuchElementException e) {
+            System.out.println("No such element: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     public Inventory readInventory()

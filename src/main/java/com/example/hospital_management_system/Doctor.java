@@ -1,9 +1,10 @@
 package com.example.hospital_management_system;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Doctor extends User {
+public class Doctor extends User implements Serializable {
     private String Specialization;
     private ArrayList<Patient> Patients = new ArrayList<>(20);
     private ArrayList<Appointment> appointments = new ArrayList<>();
@@ -19,7 +20,6 @@ public class Doctor extends User {
         Name = username;
         Password = password;
     }
-
     public Doctor() {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter the Name of the Doctor : ");

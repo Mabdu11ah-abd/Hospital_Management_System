@@ -1,8 +1,9 @@
 package com.example.hospital_management_system;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class Patient extends User {
+public class Patient extends User implements Serializable {
     private int Age;
     private String address;
     private Doctor DoctorIncharge;

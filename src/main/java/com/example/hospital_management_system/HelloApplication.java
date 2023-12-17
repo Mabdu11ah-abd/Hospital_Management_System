@@ -826,6 +826,7 @@ public class HelloApplication extends Application {
         Adminb2.setOnAction(e -> {
             stage.setScene(ScheduleapScene);
         });
+
         ScheduleAppointmentb1.setOnAction(e -> {
             Patient p = null;
             Doctor d = null;
@@ -833,18 +834,18 @@ public class HelloApplication extends Application {
                 if (ScheduleAppointmentT1.getText().isEmpty() || ScheduleAppointmentT2.getText().isEmpty() ||
                         ScheduleAppointmentT3.getText().isEmpty() || ScheduleAppointmentT4.getText().isEmpty())
                     throw new EmptyFieldException();
-
                 int doctorIndex = searchUsers(ScheduleAppointmentT1.getText());
                 int patientIndex = searchUsers(ScheduleAppointmentT2.getText());
 
                 if (doctorIndex != -1 && allUsers.get(doctorIndex) instanceof Doctor) {
                     d = (Doctor) allUsers.get(doctorIndex);
+                    System.out.println(allUsers.size());
                 } else {
                     System.out.println("Incorrect Doctor ID");
                 }
-
                 if (patientIndex != -1 && allUsers.get(patientIndex) instanceof Patient) {
                     p = (Patient) allUsers.get(patientIndex);
+                    System.out.println(allUsers.size());
                 } else {
                     System.out.println("Incorrect Patient ID");
                 }
@@ -855,25 +856,18 @@ public class HelloApplication extends Application {
                     num[2]++;
                     ap.setAppointmentID("A-" + num[2]);
                     d.addAppointment(ap);
-
                     // Update allUsers list (if needed)
                     // Note: This assumes allUsers is a global variable accessible in this scope
-                    if (!allUsers.contains(d)) {
-                        allUsers.add(d);
-                    }
-                    if (!allUsers.contains(p)) {
-                        allUsers.add(p);
-                    }
-
                     System.out.println("Appointment created successfully.");
+                    ScheduleAppointmentT1.clear();
+                    ScheduleAppointmentT2.clear();
+                    ScheduleAppointmentT3.clear();
+                    ScheduleAppointmentT4.clear();
                 }
             } catch (EmptyFieldException exception) {
                 throwAlert("Fields are empty");
             } finally {
-                ScheduleAppointmentT1.clear();
-                ScheduleAppointmentT2.clear();
-                ScheduleAppointmentT3.clear();
-                ScheduleAppointmentT4.clear();
+
                 System.out.println("Current size of allUsers: " + allUsers.size());
             }
         });
