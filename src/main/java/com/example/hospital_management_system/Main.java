@@ -1,53 +1,23 @@
 package com.example.hospital_management_system;
 
-import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main{
     public static void main(String[] args) {
+        FileHandling f = new FileHandling();
         // array lists holding the total number of doctors, beds, and patients
         ArrayList<User> allUsers = new ArrayList<>(100);
-        Bed[] allBeds = new Bed[50];
-        // initializing all beds with bed number
-        for (int i = 0; i < allBeds.length; i++) {
-            allBeds[i] = new Bed(i + 1);
-        }
-        // creating an admin user
-        User Admin = new User();
-        Admin.RegisterUser("Administrator", "Admin234", "A-1");
-        allUsers.add(Admin);
-        // adding hardcoded doctors to arraylist
-        allUsers.add(new Doctor("Doc1", "Doc123", "D-1", "TypeA"));
-        allUsers.add(new Doctor("Doc2", "Doc456", "D-2", "TypeB"));
-        allUsers.add(new Doctor("Doc3", "Doc789", "D-3", "TypeC"));
-        allUsers.add(new Doctor("Doc4", "DocABC", "D-4", "TypeD"));
-        allUsers.add(new Doctor("Doc5", "DocDEF", "D-5", "TypeE"));
-        // adding hardcoded patients
-        allUsers.add(new Patient("Patient1", "P-1", "Patient123", 25, "Address1"));
-        allUsers.add(new Patient("Patient2", "P-2", "Patient456", 30, "Address2"));
-        allUsers.add(new Patient("Patient3", "P-3", "Patient789", 22, "Address3"));
-        allUsers.add(new Patient("Patient4", "P-4", "PatientABC", 40, "Address4"));
-        allUsers.add(new Patient("Patient5", "P-5", "PatientDEF", 28, "Address5"));
+        f.readUsers(allUsers);
+        Bed[] allBeds = f.readBed();
         // inventory object
-        Inventory myInventory = new Inventory();
-        // hardcoded items
-        myInventory.addHardcoded(new Item("Item1", "Manufacturer1", 10, "I-1", 200));
-        myInventory.addHardcoded(new Item("Item2", "Manufacturer2", 20, "I-2", 300));
-        myInventory.addHardcoded(new Item("Item3", "Manufacturer3", 30, "I-3", 350));
+        Inventory myInventory =  f.readInventory();
         // Scanner variable for user input
-        FileHandling f = new FileHandling();
-        f.writeInventory(myInventory);
-        f.writeObject(allUsers);
-        f.writeBed(allBeds);
         Scanner input = new Scanner(System.in);
         // primary program loop exiting this loop exits the program
         while (true) {
-
             User CurrentUser = null; // variable that stores the current user
             int Choice;// Choice variable to be used for choices throughout the program
-
             // first Loop for Login menu
             while (CurrentUser == null) {
                 System.out.println("Enter 1 to login, enter 2 to login as new patient : "); // taking user's
@@ -221,7 +191,7 @@ public class Main{
                         if (Choice == 1) {
                             System.out.println("Enter Bed number to assign to patient : ");
                             int bednumber = input.nextInt();
-                            if (!allBeds[bednumber-1].isOccupied()) {
+                            if (!allBeds[bednumber-1].getisOccupied()) {
                                 System.out.println("enter Number of days bed has been Occupied  : ");
                                 allBeds[bednumber-1].setDaysOccupied(input.nextInt());
                                 input.nextLine();
@@ -244,7 +214,6 @@ public class Main{
                             if (searchUsers(searchID, allUsers) != 1) {
                                 ((Patient) allUsers.get(searchUsers(searchID, allUsers))).SetPatient();
                             }
-
                         } else if (Choice == 3) {
                             System.out.println("Vacating Bed : ");
                             System.out.println("Enter the ID of patient Occupying Bed : ");
@@ -256,7 +225,6 @@ public class Main{
                                 temp.setBedUsed(null);
                             }
                         }
-
                         else {
                             System.out.println("Invalid Choice : ");
                         }
@@ -273,6 +241,9 @@ public class Main{
                     }
                 }
             }
+        f.writeObject(allUsers);
+        f.writeBed(allBeds);
+        f.writeInventory(myInventory);
         }
     }
 
@@ -280,7 +251,6 @@ public class Main{
         System.out.println("Enter Your ID and Password: ");
         String tempID = input.nextLine();
         String tempPassword = input.nextLine();
-
         for (User user : allUsers) {
             if (user.login(tempID, tempPassword)) {
                 System.out.println("Logged in Successfully: ");

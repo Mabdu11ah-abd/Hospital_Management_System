@@ -1005,7 +1005,7 @@ public class HelloApplication extends Application {
                     try {
                         if (t1.getText().isEmpty() || t2.getText().isEmpty())
                             throw new EmptyFieldException();
-                        if (allBeds[Integer.parseInt(t1.getText()) - 1].isOccupied()) {  // Assuming bed numbers start from 1
+                        if (allBeds[Integer.parseInt(t1.getText()) - 1].getisOccupied()) {  // Assuming bed numbers start from 1
                             throw new RuntimeException();
                         }
                         if (!t1.getText().matches("\\d+") || !t2.getText().matches("\\d+")) {
@@ -1384,9 +1384,6 @@ public class HelloApplication extends Application {
       allBeds = fileHandling.readBed();
       GUIinv = fileHandling.readInventory();
       fileHandling.readNum(num);
-        System.out.println(num[0]);
-        System.out.println(num[1]);
-        System.out.println(num[2]);
     }
 
     public void changePassword(User[] user, Stage stage, Scene s) {

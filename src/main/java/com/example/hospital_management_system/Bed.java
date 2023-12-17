@@ -6,40 +6,12 @@ public class Bed implements Serializable {
     private int DaysOccupied;
     private int bedNumber;
     private boolean isOccupied=false;
-
-    public Bed() {
-    }
-
+//constructors of class
+    public Bed() {}
     public Bed(int bedNumber) {
         this.bedNumber=bedNumber;
     }
-
-    // Getters and Setters for all fields
-    public int getBedNumber() {
-        return bedNumber;
-    }
-
-    public void setBedNumber(int bedNumber) {
-        this.bedNumber = bedNumber;
-    }
-
-    public boolean isOccupied() {
-        return isOccupied;
-    }
-
-    public void setOccupied() {
-        isOccupied = true;
-    }
-    // Method to occupy the bed
-    public void occupyBed() {
-        if (!isOccupied) {
-            isOccupied = true;
-            System.out.println("Bed " + bedNumber + " is now occupied.");
-        } else {
-            System.out.println("Bed " + bedNumber + " is already occupied.");
-        }
-    }
-
+    // methods of bed
     // Method to vacate the bed
     public void vacantBed() {
         if (isOccupied) {
@@ -48,23 +20,18 @@ public class Bed implements Serializable {
         } else {
             System.out.println("Bed " + bedNumber + " is already vacant.");
         }
-
+    }
+    // Getters and Setters for all fields
+    public void setOccupied() {
+        isOccupied = true;
+    }
+    public boolean getisOccupied() {
+        return isOccupied;
     }
     public int getDaysOccupied() {
         return DaysOccupied;
     }
-
     public void setDaysOccupied(int daysOccupied) {
         DaysOccupied = daysOccupied; isOccupied=true;
     }
-
-    @Override
-    public String toString() {
-        return "Bed{" +
-                "DaysOccupied=" + DaysOccupied +
-                ", bedNumber=" + bedNumber +
-                ", isOccupied=" + isOccupied +
-                '}';
-    }
-// Other relevant methods
 }
