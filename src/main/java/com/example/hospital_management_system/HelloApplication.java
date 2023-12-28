@@ -839,13 +839,12 @@ public class HelloApplication extends Application {
 
                 if (doctorIndex != -1 && allUsers.get(doctorIndex) instanceof Doctor) {
                     d = (Doctor) allUsers.get(doctorIndex);
-                    System.out.println(allUsers.size());
                 } else {
                     System.out.println("Incorrect Doctor ID");
                 }
                 if (patientIndex != -1 && allUsers.get(patientIndex) instanceof Patient) {
                     p = (Patient) allUsers.get(patientIndex);
-                    System.out.println(allUsers.size());
+
                 } else {
                     System.out.println("Incorrect Patient ID");
                 }
@@ -866,9 +865,6 @@ public class HelloApplication extends Application {
                 }
             } catch (EmptyFieldException exception) {
                 throwAlert("Fields are empty");
-            } finally {
-
-                System.out.println("Current size of allUsers: " + allUsers.size());
             }
         });
 
@@ -1315,7 +1311,6 @@ public class HelloApplication extends Application {
         //inventory management Scene complete
         stage.setOnCloseRequest(e->
         {
-            System.out.println("Entered close request");
             fileHandling.writeBed(allBeds);
             fileHandling.writeInventory(GUIinv);
             fileHandling.writeObject(allUsers);
